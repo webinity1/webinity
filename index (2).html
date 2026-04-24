@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webinity – Websites, die Kunden bringen</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Ccircle cx='22' cy='10' r='4' fill='%230071e3'/%3E%3Ctext x='4' y='26' font-family='Inter,system-ui,sans-serif' font-size='20' font-weight='800' fill='white' letter-spacing='-1'%3EW%3C/text%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --w:#fff; --off:#f5f5f7; --off2:#e8e8ed;
+  --t:#1d1d1f; --mu:#6e6e73; --li:#86868b;
+  --ac:#0071e3; --ach:#0077ed; --bk:#000;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --r:18px; --rsm:12px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--w);color:var(--t);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:var(--font);}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:2000;
+  height:52px;
+  background:rgba(255,255,255,0.86);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.09);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,4vw,48px);
+  transition:background 0.3s;
+}
+.nav-logo{font-size:1.05rem;font-weight:700;color:var(--t);letter-spacing:-0.02em;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.nav-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);}
+.nav-logo sup{font-size:0.48rem;font-weight:500;color:var(--li);vertical-align:super;margin-left:1px;}
+.nav-links{display:flex;list-style:none;align-items:center;gap:2px;}
+.nav-links li a{font-size:0.78rem;color:var(--t);font-weight:400;padding:6px 13px;border-radius:7px;display:block;transition:all 0.15s;cursor:pointer;}
+.nav-links li a:hover{color:var(--ac);background:rgba(0,113,227,0.06);}
+.nav-links li a.active{color:var(--ac);font-weight:500;}
+.nav-cta-link{background:var(--ac)!important;color:#fff!important;padding:7px 18px!important;border-radius:100px!important;font-weight:500!important;margin-left:6px;}
+.nav-cta-link:hover{background:var(--ach)!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{width:20px;height:1.5px;background:var(--t);border-radius:2px;display:block;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;top:52px;left:0;right:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--off2);z-index:1999;padding:12px 20px 20px;flex-direction:column;gap:4px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-size:0.95rem;color:var(--t);padding:10px 14px;border-radius:8px;display:block;cursor:pointer;}
+.mobile-menu a:hover{background:var(--off);color:var(--ac);}
+
+/* PAGE SYSTEM */
+.page{display:none;padding-top:52px;}
+.page.active{display:block;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.75s ease,transform 0.75s ease;}
+.reveal.up{opacity:1;transform:translateY(0);}
+.reveal-scale{opacity:0;transform:scale(0.95);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal-scale.up{opacity:1;transform:scale(1);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--font);font-weight:600;font-size:0.9rem;padding:13px 26px;border-radius:100px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;}
+.btn-primary{background:var(--ac);color:#fff;}
+.btn-primary:hover{background:var(--ach);transform:scale(1.02);}
+.btn-white{background:#fff;color:var(--t);}
+.btn-white:hover{background:rgba(255,255,255,0.88);transform:scale(1.02);}
+.btn-ghost-w{background:rgba(255,255,255,0.13);color:#fff;border:1px solid rgba(255,255,255,0.28);backdrop-filter:blur(8px);}
+.btn-ghost-w:hover{background:rgba(255,255,255,0.22);}
+.btn-outline{background:transparent;color:var(--t);border:1.5px solid var(--off2);}
+.btn-outline:hover{border-color:#aaa;}
+.btn-outline-w{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.22);}
+.btn-outline-w:hover{background:rgba(255,255,255,0.08);}
+.btn-sm{padding:10px 20px;font-size:0.82rem;}
+
+/* HERO — fixed scroll overlap */
+.hero{
+  position:relative;
+  min-height:calc(100vh - 52px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;background:#000;
+  padding:60px 24px 100px; /* bottom padding keeps content away from scroll indicator */
+}
+#heroParticles{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:2;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.28;z-index:0;}
+.hero-overlay{position:absolute;inset:0;z-index:3;background:radial-gradient(ellipse 80% 70% at 50% 60%, rgba(0,80,180,0.13) 0%, transparent 70%),linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,0) 60%,rgba(0,0,0,0.75) 100%);}
+.hero-body{position:relative;z-index:5;text-align:center;max-width:900px;width:100%;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:6px 16px;border-radius:100px;margin-bottom:32px;backdrop-filter:blur(8px);animation:fadeUp 0.5s 0s both;}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);animation:blink 2s infinite;}
+.hero h1{font-size:clamp(2.8rem,9vw,8.5rem);font-weight:800;letter-spacing:-0.048em;line-height:0.98;color:#fff;margin-bottom:28px;animation:fadeUp 0.5s 0.05s both;}
+.hero h1 .hl{background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,0.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:clamp(0.95rem,2.2vw,1.3rem);font-weight:300;color:rgba(255,255,255,0.65);margin-bottom:42px;animation:fadeUp 0.5s 0.1s both;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.5s 0.15s both;}
+
+/* Scroll indicator — positioned absolute, clear of buttons */
+.hero-scroll{
+  position:absolute;
+  bottom:28px;left:50%;
+  transform:translateX(-50%);
+  z-index:5;
+  color:rgba(255,255,255,0.4);
+  font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeUp 0.5s 0.2s both;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);animation:scrollDrop 2s infinite;}
+
+/* 3D SECTION */
+.canvas-section{height:100vh;background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#threeCanvas{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:1;}
+.canvas-text{position:relative;z-index:2;text-align:center;color:#fff;pointer-events:none;padding:0 24px;text-shadow:0 2px 40px rgba(0,0,0,0.8);}
+.canvas-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:18px;}
+.canvas-text h2{font-size:clamp(2.5rem,7vw,6rem);font-weight:800;letter-spacing:-0.04em;line-height:1.04;margin-bottom:14px;}
+.canvas-text p{font-size:1.05rem;color:rgba(255,255,255,0.5);font-weight:300;line-height:1.6;}
+
+/* TRUST STRIP */
+.trust-strip{background:var(--w);border-top:1px solid var(--off2);border-bottom:1px solid var(--off2);display:grid;grid-template-columns:repeat(4,1fr);}
+.trust-item{padding:28px 20px;text-align:center;position:relative;}
+.trust-item:not(:last-child)::after{content:'';position:absolute;right:0;top:25%;bottom:25%;width:1px;background:var(--off2);}
+.trust-num{font-size:2.2rem;font-weight:800;letter-spacing:-0.04em;color:var(--t);line-height:1;margin-bottom:5px;}
+.trust-num span{color:var(--ac);}
+.trust-label{font-size:0.78rem;color:var(--mu);}
+
+/* HOME FEATURES */
+.home-features{padding:100px clamp(20px,5vw,80px);position:relative;}
+#gridCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.55;}
+.home-features > *{position:relative;z-index:1;}
+.hf-top{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;}
+.hf-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ac);margin-bottom:16px;}
+.hf-title{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.04em;line-height:1.06;margin-bottom:20px;}
+.hf-desc{font-size:1rem;color:var(--mu);line-height:1.75;font-weight:300;margin-bottom:32px;}
+.hf-right{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hf-card{background:var(--off);border-radius:16px;padding:28px 24px;border:1px solid var(--off2);transition:transform 0.3s,box-shadow 0.3s;cursor:pointer;}
+.hf-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.08);}
+.hf-card-icon{font-size:1.6rem;margin-bottom:14px;}
+.hf-card-title{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px;}
+.hf-card-desc{font-size:0.8rem;color:var(--mu);line-height:1.6;font-weight:300;}
+
+/* PACKAGES PREVIEW */
+.pkg-preview{background:var(--off);padding:100px clamp(20px,5vw,80px);}
+.pp-header{text-align:center;margin-bottom:60px;}
+.pp-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ac);margin-bottom:14px;}
+.pp-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:16px;}
+.pp-sub{font-size:1rem;color:var(--mu);font-weight:300;max-width:480px;margin:0 auto;}
+.pkg-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1080px;margin:0 auto 40px;}
+.pkg-card{background:var(--w);border-radius:20px;padding:36px 28px;border:1px solid var(--off2);transition:transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
+.pkg-card:hover{transform:translateY(-6px);box-shadow:0 28px 70px rgba(0,0,0,0.11);}
+.pkg-card.feat{background:var(--t);color:#fff;border-color:transparent;}
+.pkg-card.feat .pkg-muted,.pkg-card.feat .pkg-feat{color:rgba(255,255,255,0.55);}
+.pkg-card.feat .pkg-div{border-color:rgba(255,255,255,0.1);}
+.pkg-card.feat .pkg-chk{color:#60c4ff;}
+.pkg-tier{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ac);margin-bottom:20px;display:block;}
+.pkg-card.feat .pkg-tier{color:#60c4ff;}
+.pkg-name{font-size:1.3rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:8px;}
+.pkg-price{font-size:3rem;font-weight:800;letter-spacing:-0.05em;line-height:1;margin-bottom:4px;}
+.pkg-price sup{font-size:0.95rem;font-weight:600;vertical-align:top;margin-top:10px;}
+.pkg-muted{font-size:0.78rem;color:var(--li);margin-bottom:22px;}
+.pkg-div{border:none;border-top:1px solid var(--off2);margin-bottom:18px;}
+.pkg-feat{display:flex;align-items:flex-start;gap:9px;font-size:0.85rem;color:var(--mu);padding:5px 0;line-height:1.4;}
+.pkg-chk{color:var(--ac);font-size:0.8rem;flex-shrink:0;margin-top:2px;}
+.pkg-btn{display:block;width:100%;text-align:center;margin-top:26px;padding:13px;border-radius:100px;font-size:0.875rem;font-weight:600;cursor:pointer;border:none;font-family:var(--font);transition:all 0.2s;}
+.pkg-btn.blue{background:var(--ac);color:#fff;}
+.pkg-btn.blue:hover{background:var(--ach);}
+.pkg-btn.ol{background:transparent;border:1.5px solid var(--off2);color:var(--t);}
+.pkg-btn.ol:hover{border-color:#999;}
+.pkg-btn.wh{background:#fff;color:var(--t);}
+.pkg-btn.wh:hover{background:rgba(255,255,255,0.9);}
+
+/* TESTIMONIALS */
+.testi-section{background:var(--off);padding:80px 0;}
+.testi-head{text-align:center;padding:0 24px 48px;}
+.testi-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ac);margin-bottom:14px;}
+.testi-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-0.04em;}
+.testi-wrap{overflow:hidden;mask-image:linear-gradient(to right,transparent,black 12%,black 88%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,black 12%,black 88%,transparent);}
+.testi-track{display:flex;gap:16px;animation:scrollLeft 32s linear infinite;width:max-content;}
+.testi-track:hover{animation-play-state:paused;}
+.t-card{background:var(--w);border:1px solid var(--off2);border-radius:18px;padding:28px;width:320px;flex-shrink:0;transition:box-shadow 0.3s;}
+.t-card:hover{box-shadow:0 20px 50px rgba(0,0,0,0.08);}
+.t-stars{color:var(--ac);font-size:0.82rem;margin-bottom:12px;letter-spacing:2px;}
+.t-text{font-size:0.875rem;color:var(--mu);line-height:1.65;font-style:italic;font-weight:300;margin-bottom:18px;}
+.t-author{display:flex;align-items:center;gap:10px;}
+.t-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;}
+.t-name{font-size:0.82rem;font-weight:600;color:var(--t);}
+.t-role{font-size:0.72rem;color:var(--li);}
+
+/* HOME CTA */
+.home-cta{background:var(--bk);padding:120px clamp(20px,5vw,80px);text-align:center;position:relative;overflow:hidden;}
+.home-cta::before{content:'';position:absolute;width:800px;height:600px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.18),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.hcta-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:18px;position:relative;}
+.hcta-title{font-size:clamp(2.8rem,7vw,6.5rem);font-weight:800;letter-spacing:-0.045em;line-height:1.03;color:#fff;margin-bottom:20px;position:relative;}
+.hcta-sub{font-size:1.05rem;color:rgba(255,255,255,0.4);font-weight:300;margin-bottom:44px;position:relative;}
+
+/* PAGE: PAKETE */
+.page-hero-dark{padding:110px clamp(20px,5vw,80px) 80px;background:var(--bk);text-align:center;position:relative;overflow:hidden;}
+.page-hero-dark::before{content:'';position:absolute;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.14),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.phd-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:16px;position:relative;}
+.phd-title{font-size:clamp(3rem,8vw,7.5rem);font-weight:800;letter-spacing:-0.045em;line-height:1.02;color:#fff;margin-bottom:18px;position:relative;}
+.phd-sub{font-size:1.1rem;font-weight:300;color:rgba(255,255,255,0.45);max-width:440px;margin:0 auto;position:relative;}
+
+.packages-section{padding:80px clamp(20px,5vw,80px);background:var(--off);}
+.compare-section{padding:80px clamp(20px,5vw,80px);background:var(--w);}
+.compare-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:8px;}
+.compare-sub{text-align:center;color:var(--mu);font-size:0.95rem;font-weight:300;margin-bottom:50px;}
+.compare-table{max-width:860px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--off2);}
+.ct-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--t);color:#fff;padding:16px 24px;font-size:0.78rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;}
+.ct-header div:not(:first-child){text-align:center;}
+.ct-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:13px 24px;border-bottom:1px solid var(--off2);font-size:0.85rem;align-items:center;}
+.ct-row:last-child{border-bottom:none;}
+.ct-row:nth-child(even){background:var(--off);}
+.ct-val{text-align:center;font-weight:500;}
+.ct-val.y{color:var(--ac);font-weight:600;}
+.ct-val.n{color:#ccc;}
+.ct-val.h{color:var(--t);font-weight:700;}
+.faq-section{padding:80px clamp(20px,5vw,80px);background:var(--off);}
+.faq-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:48px;}
+.faq-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}
+.faq-item{background:var(--w);border-radius:12px;border:1px solid var(--off2);overflow:hidden;}
+.faq-q{padding:18px 22px;font-weight:600;font-size:0.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+.faq-q::after{content:'↓';font-size:0.8rem;color:var(--mu);transition:transform 0.3s;flex-shrink:0;margin-left:12px;}
+.faq-item.open .faq-q::after{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a-in{padding:0 22px 18px;font-size:0.85rem;color:var(--mu);line-height:1.7;font-weight:300;}
+
+/* BEISPIELE PAGE */
+.examples-page-hero{
+  background:var(--bk);padding:110px clamp(20px,5vw,80px) 80px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.examples-page-hero::before{content:'';position:absolute;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.14),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+
+.examples-section{padding:80px clamp(20px,5vw,80px) 100px;background:var(--w);}
+/* EXAMPLES HINT BANNER */
+.ex-hint-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#f0f6ff 0%,#e8f0fe 100%);
+  border:1px solid rgba(0,113,227,0.15);
+  border-radius:16px;padding:20px 24px;margin-bottom:60px;
+}
+.ex-hint-left{display:flex;align-items:flex-start;gap:14px;}
+.ex-hint-icon{font-size:1.1rem;color:var(--ac);margin-top:2px;flex-shrink:0;}
+.ex-hint-title{font-size:0.875rem;font-weight:600;color:var(--t);margin-bottom:4px;letter-spacing:-0.01em;}
+.ex-hint-sub{font-size:0.78rem;color:var(--mu);font-weight:300;}
+.ex-hint-sub a{color:var(--ac);font-weight:500;text-decoration:underline;text-underline-offset:2px;}
+.ex-hint-btn{
+  background:var(--ac);color:#fff;
+  font-size:0.78rem;font-weight:600;padding:10px 20px;
+  border:none;border-radius:100px;cursor:pointer;white-space:nowrap;
+  font-family:var(--font);transition:background 0.2s,transform 0.15s;flex-shrink:0;
+}
+.ex-hint-btn:hover{background:var(--ach);transform:scale(1.02);}
+.ex-item{margin-bottom:120px;}
+.ex-item:last-child{margin-bottom:0;}
+
+.ex-pkg-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;margin-bottom:20px;
+}
+.ex-pkg-pill.starter{background:#f0f0f0;color:#555;border:1.5px solid #ddd;}
+.ex-pkg-pill.premium{background:rgba(0,113,227,0.07);color:var(--ac);border:1.5px solid rgba(0,113,227,0.22);}
+.ex-pkg-pill.allinone{background:rgba(124,58,237,0.07);color:#7c3aed;border:1.5px solid rgba(124,58,237,0.22);}
+.ex-pkg-pill .pill-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+.ex-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;}
+.ex-header-left{}
+.ex-project-name{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:6px;}
+.ex-project-sub{font-size:0.9rem;color:var(--mu);font-weight:300;}
+.ex-price-tag{
+  background:var(--t);color:#fff;
+  font-size:1.1rem;font-weight:800;letter-spacing:-0.03em;
+  padding:10px 22px;border-radius:12px;white-space:nowrap;
+}
+.ex-price-tag span{font-size:0.65rem;font-weight:400;opacity:0.5;display:block;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1px;}
+
+.browser{
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 4px 6px rgba(0,0,0,0.04), 0 12px 28px rgba(0,0,0,0.1), 0 40px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06);
+}
+.browser-bar{height:44px;display:flex;align-items:center;padding:0 16px;gap:8px;position:relative;}
+.browser-bar.light{background:#f0f0f0;}
+.browser-bar.dark{background:#1c1c1e;}
+.browser-bar.cream{background:#ede8df;}
+.browser-bar.grass{background:#1a2a0e;}
+.bd{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.b-url-wrap{flex:1;display:flex;justify-content:center;}
+.b-url{
+  display:flex;align-items:center;gap:6px;
+  height:24px;border-radius:6px;padding:0 12px;
+  font-size:0.7rem;font-family:'SF Mono','Fira Mono',monospace;
+  max-width:300px;width:100%;
+}
+.b-url.light{background:#fff;color:#888;}
+.b-url.dark{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.45);}
+.b-url.grass-url{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);}
+.b-lock{font-size:0.62rem;opacity:0.5;}
+
+.ex-info{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:32px;}
+.ex-info-left h3{font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:10px;}
+.ex-info-left p{font-size:0.875rem;color:var(--mu);line-height:1.75;font-weight:300;margin-bottom:22px;}
+.ex-features-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;}
+.ex-feat-item{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--mu);}
+.ex-feat-item::before{content:'✓';color:var(--ac);font-weight:700;font-size:0.75rem;flex-shrink:0;}
+.ex-info-cta{margin-top:24px;}
+
+/* ===================== */
+/* MOCK: FC ALPINUS (NEU) */
+/* ===================== */
+.mock-fca{
+  background:#071428;font-family:'Inter',sans-serif;
+  min-height:600px;overflow:hidden;position:relative;
+}
+.mfca-top-bar{
+  background:linear-gradient(90deg,#1a4fa8,#2563eb,#1a4fa8);
+  color:rgba(255,255,255,0.92);font-size:0.62rem;font-weight:700;letter-spacing:0.06em;
+  text-align:center;padding:6px 20px;
+  animation:scrollLeft 18s linear infinite;
+  white-space:nowrap;overflow:hidden;
+}
+.mfca-nav{
+  background:rgba(10,15,30,0.97);height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+}
+.mfca-logo-wrap{display:flex;align-items:center;gap:12px;}
+.mfca-crest-svg{filter:drop-shadow(0 2px 8px rgba(255,255,255,0.25));}
+.mfca-name-block{}
+.mfca-name{font-size:1rem;font-weight:900;color:#fff;letter-spacing:0.02em;line-height:1.1;}
+.mfca-name span{color:#60a5fa;}
+.mfca-since{font-size:0.52rem;color:rgba(148,196,255,0.5);letter-spacing:0.1em;text-transform:uppercase;}
+.mfca-links{display:flex;gap:22px;align-items:center;}
+.mfca-links a{font-size:0.72rem;color:rgba(255,255,255,0.4);cursor:pointer;}
+.mfca-links a.mfca-act{color:#fff;}
+.mfca-ticket{
+  background:linear-gradient(135deg,#1a4fa8,#2563eb);
+  color:#0a0f1e;font-size:0.68rem;font-weight:800;
+  padding:7px 16px;border-radius:6px;letter-spacing:0.04em;
+}
+/* HERO */
+.mfca-hero{
+  position:relative;height:300px;overflow:hidden;
+}
+.mfca-hero-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 30%;
+  filter:brightness(0.45) saturate(0.8);
+}
+.mfca-hero-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to right,rgba(10,15,30,0.92) 40%,rgba(10,15,30,0.2) 100%),
+    linear-gradient(to top,rgba(10,15,30,0.8) 0%,transparent 50%);
+}
+.mfca-live-badge{
+  position:absolute;top:16px;right:16px;z-index:3;
+  background:rgba(37,99,235,0.2);border:1px solid rgba(96,165,250,0.4);
+  color:#93c5fd;font-size:0.58rem;font-weight:800;letter-spacing:0.1em;
+  padding:5px 10px;border-radius:4px;text-transform:uppercase;
+  animation:blink 2s infinite;
+}
+.mfca-hero-content{
+  position:absolute;inset:0;padding:40px 28px 28px;
+  display:flex;flex-direction:column;justify-content:center;z-index:3;
+}
+.mfca-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:#93c5fd;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);
+  padding:4px 12px;border-radius:4px;margin-bottom:14px;width:fit-content;
+}
+.mfca-h1{
+  font-size:2.8rem;font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:0.95;margin-bottom:10px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.5);
+}
+.mfca-h1 em{font-style:normal;color:#60a5fa;}
+.mfca-sub{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.5;max-width:320px;}
+.mfca-btns{display:flex;gap:10px;}
+.mfca-btn1{
+  background:linear-gradient(135deg,#1a4fa8,#2563eb);
+  color:#fff;font-size:0.72rem;font-weight:800;padding:9px 20px;border-radius:6px;
+  box-shadow:0 6px 20px rgba(37,99,235,0.4);
+}
+.mfca-btn2{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:0.72rem;padding:9px 16px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);}
+/* Match float card */
+.mfca-match-card{
+  position:absolute;bottom:20px;right:22px;z-index:4;
+  background:rgba(5,15,40,0.88);border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;padding:12px 16px;backdrop-filter:blur(16px);min-width:200px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.mfca-mc-label{font-size:0.5rem;font-weight:700;letter-spacing:0.15em;color:rgba(148,196,255,0.7);text-transform:uppercase;margin-bottom:8px;}
+.mfca-mc-teams{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.mfca-mc-team{display:flex;align-items:center;gap:6px;font-size:0.7rem;font-weight:700;color:#fff;}
+.mfca-mc-shield{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:900;color:#fff;}
+.mfca-mc-vs{font-size:0.62rem;font-weight:700;color:#93c5fd;background:rgba(59,130,246,0.12);padding:3px 7px;border-radius:4px;}
+.mfca-mc-info{font-size:0.58rem;color:rgba(255,255,255,0.4);}
+/* STATS */
+.mfca-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:#060f20;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.mfca-stat{padding:13px 16px;text-align:center;}
+.mfca-stat:not(:last-child){border-right:1px solid rgba(255,255,255,0.04);}
+.mfca-stat-n{font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.04em;margin-bottom:2px;}
+.mfca-stat-n span{color:#60a5fa;}
+.mfca-stat-l{font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.28);}
+/* NEWS */
+.mfca-news{padding:18px 28px;background:#0a0f1e;}
+.mfca-news-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.mfca-news-label{font-size:0.72rem;font-weight:800;color:#fff;letter-spacing:-0.01em;}
+.mfca-news-all{font-size:0.6rem;color:#c8a84b;font-weight:600;}
+.mfca-news-grid{display:grid;grid-template-columns:2fr 1fr;gap:10px;}
+.mfca-news-main{border-radius:10px;overflow:hidden;position:relative;}
+.mfca-news-main img{width:100%;height:130px;object-fit:cover;display:block;filter:brightness(0.65) saturate(0.85);}
+.mfca-news-overlay{position:absolute;inset:0;padding:14px;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;}
+.mfca-news-cat{font-size:0.52rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:4px;}
+.mfca-news-ttl{font-size:0.72rem;font-weight:700;color:#fff;line-height:1.25;}
+.mfca-news-side{display:flex;flex-direction:column;gap:8px;}
+.mfca-news-item{background:#111827;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);display:flex;align-items:stretch;}
+.mfca-news-item img{width:52px;flex-shrink:0;object-fit:cover;filter:brightness(0.6);}
+.mfca-news-item-text{padding:8px 10px;}
+.mfca-news-item-cat{font-size:0.48rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:3px;}
+.mfca-news-item-ttl{font-size:0.6rem;font-weight:600;color:rgba(255,255,255,0.8);line-height:1.3;}
+/* TEAM STRIP */
+.mfca-team-strip{background:#060f20;padding:12px 28px;border-top:1px solid rgba(255,255,255,0.04);}
+.mfca-team-label{font-size:0.48rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(148,196,255,0.5);margin-bottom:10px;}
+.mfca-team-photos{display:flex;gap:8px;align-items:center;}
+.mfca-tp{text-align:center;flex-shrink:0;}
+.mfca-tp img{width:38px;height:38px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 4px;border:1.5px solid rgba(59,130,246,0.4);filter:brightness(0.9) saturate(0.8);}
+.mfca-tp-name{font-size:0.44rem;color:rgba(255,255,255,0.35);letter-spacing:0.04em;white-space:nowrap;}
+.mfca-tp.all img{display:none;}
+.mfca-tp.all{width:38px;height:38px;border-radius:50%;background:rgba(59,130,246,0.08);border:1.5px solid rgba(59,130,246,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:4px;}
+.mfca-tp.all span{font-size:0.6rem;font-weight:700;color:rgba(148,196,255,0.7);line-height:1;}
+/* FOOTER */
+.mfca-footer{
+  background:#040c1c;padding:12px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.mfca-ft-left{display:flex;align-items:center;gap:8px;}
+.mfca-ft-name{font-size:0.78rem;font-weight:700;color:#fff;}
+.mfca-ft-links{display:flex;gap:14px;}
+.mfca-ft-links span{font-size:0.6rem;color:rgba(255,255,255,0.28);}
+.mfca-ft-social{display:flex;gap:6px;}
+.mfca-soc{width:24px;height:24px;border-radius:5px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(148,196,255,0.6);}
+
+/* ===================== */
+/* MOCK: FC CHAM (FUSSBALLVEREIN) — kept for reference but hidden */
+/* ===================== */
+.mock-fc{
+  background:#0d1117;font-family:'Inter',sans-serif;
+  min-height:560px;overflow:hidden;
+}
+.mfc-nav{
+  background:rgba(13,17,23,0.98);height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.mfc-logo-wrap{display:flex;align-items:center;gap:10px;}
+.mfc-crest{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#1a6b2a 0%,#22882f 50%,#1a6b2a 100%);
+  border:2px solid #2da83a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:900;color:#fff;letter-spacing:0;
+}
+.mfc-name{font-size:0.9rem;font-weight:800;color:#fff;letter-spacing:-0.01em;}
+.mfc-name span{color:#2da83a;}
+.mfc-links{display:flex;gap:20px;align-items:center;}
+.mfc-links a{font-size:0.72rem;color:rgba(255,255,255,0.45);cursor:pointer;}
+.mfc-links a.mfc-act{color:#fff;}
+.mfc-ticket{background:#2da83a;color:#fff;font-size:0.7rem;font-weight:700;padding:7px 16px;border-radius:6px;letter-spacing:0.02em;}
+
+.mfc-hero{
+  position:relative;height:280px;overflow:hidden;
+  background:linear-gradient(135deg,#0a1a0d 0%,#143320 40%,#0a1a0d 100%);
+}
+.mfc-hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 70% 50%,rgba(45,168,58,0.18) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%,rgba(45,168,58,0.08) 0%,transparent 60%);
+}
+/* Football pitch lines overlay */
+.mfc-pitch-lines{
+  position:absolute;inset:0;opacity:0.07;
+  background-image:
+    linear-gradient(#2da83a 1px,transparent 1px),
+    linear-gradient(90deg,#2da83a 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.mfc-hero-img{
+  position:absolute;right:0;top:0;bottom:0;width:55%;
+  object-fit:cover;opacity:0.35;
+  mask-image:linear-gradient(to left,rgba(0,0,0,0.7) 0%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,0.7) 0%,transparent 100%);
+}
+.mfc-hero-content{
+  position:absolute;inset:0;padding:32px 28px;display:flex;flex-direction:column;justify-content:center;
+  z-index:2;
+}
+.mfc-season-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:#2da83a;border:1px solid rgba(45,168,58,0.3);background:rgba(45,168,58,0.08);
+  padding:4px 12px;border-radius:4px;margin-bottom:14px;width:fit-content;
+}
+.mfc-h1{font-size:2.6rem;font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1.0;margin-bottom:8px;}
+.mfc-h1 em{font-style:normal;color:#2da83a;}
+.mfc-sub{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.5;}
+.mfc-btns{display:flex;gap:10px;}
+.mfc-btn1{background:#2da83a;color:#fff;font-size:0.72rem;font-weight:700;padding:9px 20px;border-radius:6px;}
+.mfc-btn2{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:0.72rem;padding:9px 16px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);}
+
+/* Next match banner */
+.mfc-nextmatch{
+  background:linear-gradient(90deg,#1a2a0e 0%,#0d1a08 100%);
+  border-top:1px solid rgba(45,168,58,0.2);border-bottom:1px solid rgba(45,168,58,0.1);
+  padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.mfc-nm-label{font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#2da83a;}
+.mfc-nm-match{display:flex;align-items:center;gap:16px;}
+.mfc-nm-team{font-size:0.82rem;font-weight:700;color:#fff;}
+.mfc-nm-vs{font-size:0.62rem;color:rgba(255,255,255,0.3);font-weight:500;}
+.mfc-nm-info{font-size:0.68rem;color:rgba(255,255,255,0.45);}
+.mfc-nm-btn{background:#2da83a;color:#fff;font-size:0.62rem;font-weight:700;padding:6px 14px;border-radius:5px;white-space:nowrap;}
+
+/* Stats row */
+.mfc-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:#111820;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.mfc-stat{padding:14px 16px;text-align:center;}
+.mfc-stat:not(:last-child){border-right:1px solid rgba(255,255,255,0.04);}
+.mfc-stat-n{font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.04em;margin-bottom:2px;}
+.mfc-stat-n span{color:#2da83a;}
+.mfc-stat-l{font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);}
+
+/* News grid */
+.mfc-news{padding:20px 28px;display:grid;grid-template-columns:2fr 1fr;gap:12px;background:#0d1117;}
+.mfc-news-main{border-radius:10px;overflow:hidden;position:relative;}
+.mfc-news-img{width:100%;height:130px;object-fit:cover;display:block;filter:brightness(0.7) saturate(0.9);}
+.mfc-news-overlay{
+  position:absolute;inset:0;padding:14px 16px;
+  background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.mfc-news-cat{font-size:0.55rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2da83a;margin-bottom:4px;}
+.mfc-news-title{font-size:0.75rem;font-weight:700;color:#fff;line-height:1.3;}
+.mfc-news-side{display:flex;flex-direction:column;gap:8px;}
+.mfc-news-item{background:#111820;border-radius:8px;padding:10px 12px;border:1px solid rgba(255,255,255,0.04);}
+.mfc-news-item-cat{font-size:0.52rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2da83a;margin-bottom:3px;}
+.mfc-news-item-title{font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.8);line-height:1.3;}
+
+.mfc-footer{
+  background:#060d08;padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid rgba(255,255,255,0.04);
+}
+.mfc-ft-brand{display:flex;align-items:center;gap:8px;}
+.mfc-ft-n{font-size:0.78rem;font-weight:700;color:#fff;}
+.mfc-ft-links{display:flex;gap:16px;}
+.mfc-ft-links span{font-size:0.62rem;color:rgba(255,255,255,0.3);}
+.mfc-ft-social{display:flex;gap:8px;}
+.mfc-social-btn{width:26px;height:26px;border-radius:5px;background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:rgba(255,255,255,0.5);}
+
+/* ===================== */
+/* MOCK: PREMIUM — DIGITAL AGENCY / TECH (very impressive) */
+/* ===================== */
+.mock-premium{
+  background:#050508;font-family:'Inter',sans-serif;
+  min-height:600px;overflow:hidden;
+  position:relative;
+}
+/* Animated gradient background */
+.mpm-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 30%,rgba(99,102,241,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 70%,rgba(0,113,227,0.1) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 60% 10%,rgba(139,92,246,0.08) 0%,transparent 50%);
+}
+/* Grid overlay */
+.mpm-grid{
+  position:absolute;inset:0;z-index:0;opacity:0.04;
+  background-image:linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.mpm-nav{
+  position:relative;z-index:2;
+  background:rgba(5,5,8,0.9);height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;border-bottom:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(10px);
+}
+.mpm-logo{display:flex;align-items:center;gap:8px;}
+.mpm-logo-mark{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,#6366f1,#3b82f6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;color:#fff;
+}
+.mpm-logo-name{font-size:0.88rem;font-weight:700;color:#fff;letter-spacing:0.04em;text-transform:uppercase;}
+.mpm-links{display:flex;gap:22px;align-items:center;}
+.mpm-links a{font-size:0.72rem;color:rgba(255,255,255,0.4);cursor:pointer;transition:color 0.2s;}
+.mpm-links a.mpm-act{color:rgba(255,255,255,0.9);}
+.mpm-links a:hover{color:rgba(255,255,255,0.75);}
+.mpm-navbtn{
+  background:linear-gradient(135deg,#6366f1,#3b82f6);
+  color:#fff;font-size:0.7rem;font-weight:700;
+  padding:7px 18px;border-radius:20px;letter-spacing:0.04em;
+}
+
+/* Hero */
+.mpm-hero{
+  position:relative;z-index:1;
+  padding:52px 32px 40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+  min-height:280px;
+}
+.mpm-hero-left{}
+.mpm-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.58rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);background:rgba(99,102,241,0.08);
+  padding:4px 12px;border-radius:20px;margin-bottom:18px;
+}
+.mpm-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:#6366f1;box-shadow:0 0 8px #6366f1;}
+.mpm-h1{font-size:2.6rem;font-weight:900;color:#fff;letter-spacing:-0.05em;line-height:1.0;margin-bottom:14px;}
+.mpm-h1 .mpm-grad{
+  background:linear-gradient(135deg,#a5b4fc 0%,#60a5fa 50%,#a78bfa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.mpm-sub{font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.65;margin-bottom:22px;font-weight:300;max-width:340px;}
+.mpm-btns{display:flex;gap:10px;}
+.mpm-btn1{
+  background:linear-gradient(135deg,#6366f1,#3b82f6);
+  color:#fff;font-size:0.72rem;font-weight:700;padding:10px 22px;border-radius:20px;
+  box-shadow:0 8px 24px rgba(99,102,241,0.35);
+}
+.mpm-btn2{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);font-size:0.72rem;padding:10px 18px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);}
+
+/* Right side — floating UI card */
+.mpm-hero-right{position:relative;}
+.mpm-ui-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;padding:20px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.mpm-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.mpm-card-title{font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.6);}
+.mpm-card-badge{font-size:0.55rem;font-weight:700;color:#34d399;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);padding:2px 8px;border-radius:20px;letter-spacing:0.06em;text-transform:uppercase;}
+.mpm-metric-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
+.mpm-metric{background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 10px;border:1px solid rgba(255,255,255,0.05);}
+.mpm-metric-n{font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.04em;margin-bottom:2px;}
+.mpm-metric-n .up{color:#34d399;font-size:0.65rem;}
+.mpm-metric-l{font-size:0.55rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;}
+/* Mini chart bars */
+.mpm-chart{display:flex;align-items:flex-end;gap:3px;height:40px;margin-bottom:12px;}
+.mpm-bar{
+  flex:1;border-radius:3px 3px 0 0;
+  background:rgba(99,102,241,0.3);
+  transition:all 0.3s;
+}
+.mpm-bar.hi{background:linear-gradient(to top,#6366f1,#a5b4fc);}
+.mpm-services-row{display:flex;gap:6px;flex-wrap:wrap;}
+.mpm-svc-tag{
+  font-size:0.58rem;font-weight:600;letter-spacing:0.06em;
+  padding:4px 10px;border-radius:20px;
+  background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.07);
+}
+.mpm-svc-tag.active{background:rgba(99,102,241,0.15);color:#a5b4fc;border-color:rgba(99,102,241,0.25);}
+
+/* Work grid */
+.mpm-work{
+  position:relative;z-index:1;
+  padding:0 32px 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.mpm-work-item{border-radius:10px;overflow:hidden;position:relative;}
+.mpm-work-img{width:100%;height:88px;object-fit:cover;display:block;filter:brightness(0.6) saturate(0.7);}
+.mpm-work-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,8,0.9) 0%,transparent 55%);
+  padding:8px 10px;display:flex;flex-direction:column;justify-content:flex-end;
+}
+.mpm-work-cat{font-size:0.52rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6366f1;margin-bottom:2px;}
+.mpm-work-name{font-size:0.62rem;font-weight:600;color:rgba(255,255,255,0.85);}
+
+/* Marquee / scroll tech strip */
+.mpm-tech-strip{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);
+  padding:10px 0;overflow:hidden;
+}
+.mpm-tech-track{display:flex;gap:32px;animation:scrollLeft 18s linear infinite;width:max-content;}
+.mpm-tech-item{font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.2);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;}
+.mpm-tech-item span{color:rgba(255,255,255,0.08);margin:0 8px;}
+
+/* ===================== */
+/* MOCK: PREMIUM V2 — AURORA (CHF 250) — Elegant Luxury */
+/* ===================== */
+.mock-premium-v2{
+  background:#0c0c0f;font-family:'Inter',sans-serif;
+  min-height:580px;overflow:hidden;position:relative;
+}
+.nexus-canvas{
+  position:absolute;inset:0;width:100%!important;height:100%!important;
+  pointer-events:none;z-index:0;
+}
+.npv2-nav{
+  position:relative;z-index:2;height:50px;
+  background:rgba(12,12,15,0.7);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;border-bottom:1px solid rgba(255,255,255,0.055);
+}
+.npv2-logo{display:flex;align-items:center;gap:10px;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.14em;text-transform:uppercase;}
+.npv2-logo-mark{width:22px;height:22px;border:1.5px solid rgba(255,255,255,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.npv2-links{display:flex;gap:28px;}
+.npv2-links a{font-size:0.65rem;font-weight:400;color:rgba(255,255,255,0.28);cursor:pointer;letter-spacing:0.04em;}
+.npv2-links a.npv2-act{color:rgba(255,255,255,0.8);}
+.npv2-btn{font-size:0.65rem;font-weight:500;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.16);padding:5px 16px;border-radius:2px;letter-spacing:0.06em;}
+.npv2-hero{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;
+  padding:52px 32px 30px;align-items:center;
+}
+.npv2-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:0.52rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.1);
+  padding:4px 12px;border-radius:2px;margin-bottom:22px;
+}
+.npv2-pill-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.45);}
+.npv2-h1{font-size:2.8rem;font-weight:800;color:#fff;letter-spacing:-0.048em;line-height:0.94;margin-bottom:18px;}
+.npv2-grad{background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.4) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.npv2-sub{font-size:0.76rem;color:rgba(255,255,255,0.3);line-height:1.75;margin-bottom:26px;max-width:295px;font-weight:300;letter-spacing:0.02em;}
+.npv2-cta-row{display:flex;gap:12px;margin-bottom:30px;}
+.npv2-cta1{background:#fff;color:#0c0c0f;font-size:0.68rem;font-weight:700;padding:10px 22px;border-radius:2px;letter-spacing:0.06em;}
+.npv2-cta2{background:transparent;color:rgba(255,255,255,0.42);font-size:0.68rem;padding:10px 18px;border-radius:2px;border:1px solid rgba(255,255,255,0.1);letter-spacing:0.06em;}
+.npv2-stats-row{display:flex;gap:0;border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;}
+.npv2-stat-item{padding-right:22px;margin-right:22px;border-right:1px solid rgba(255,255,255,0.07);}
+.npv2-stat-item:last-child{border-right:none;padding-right:0;margin-right:0;}
+.npv2-stat-n{font-size:1.25rem;font-weight:700;color:#fff;letter-spacing:-0.04em;line-height:1;margin-bottom:5px;}
+.npv2-stat-l{font-size:0.48rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.24);}
+.npv2-float-card{
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:3px;padding:18px;
+  backdrop-filter:blur(40px);
+  box-shadow:0 32px 80px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.06);
+  margin-bottom:10px;
+}
+.npv2-fc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.npv2-fc-title{font-size:0.56rem;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;}
+.npv2-fc-live{font-size:0.5rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;display:flex;align-items:center;gap:5px;}
+.npv2-fc-live::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.6);animation:blink 2s infinite;}
+.npv2-chart-wrap{margin-bottom:14px;}
+.nexus-mini-chart{display:block;width:100%;height:60px;}
+.npv2-fc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+.npv2-metric{padding:10px 8px;border-top:1px solid rgba(255,255,255,0.06);}
+.npv2-metric:not(:last-child){border-right:1px solid rgba(255,255,255,0.06);}
+.npv2-m-n{font-size:0.9rem;font-weight:700;color:#fff;letter-spacing:-0.03em;margin-bottom:3px;}
+.npv2-m-l{font-size:0.44rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.25);}
+.npv2-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.npv2-tag{font-size:0.54rem;font-weight:400;padding:4px 10px;border-radius:2px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.28);}
+.npv2-tag.t1{color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.16);}
+.npv2-strip{position:relative;z-index:2;background:rgba(255,255,255,0.018);border-top:1px solid rgba(255,255,255,0.05);padding:8px 0;overflow:hidden;}
+.npv2-strip-track{display:flex;gap:28px;animation:scrollLeft 25s linear infinite;width:max-content;}
+.npv2-strip-track span{font-size:0.56rem;font-weight:400;color:rgba(255,255,255,0.18);letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;}
+.npv2-projects{position:relative;z-index:2;padding:16px 32px 22px;}
+.npv2-proj-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.npv2-ph-label{font-size:0.5rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.24);}
+.npv2-ph-count{font-size:0.5rem;color:rgba(255,255,255,0.24);letter-spacing:0.1em;}
+.npv2-proj-grid{display:grid;grid-template-columns:2fr 1fr;gap:5px;}
+.npv2-proj-item{border-radius:2px;overflow:hidden;position:relative;cursor:pointer;}
+.npv2-proj-item img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.42) saturate(0.4);transition:filter 0.4s;}
+.npv2-proj-item:hover img{filter:brightness(0.62) saturate(0.6);}
+.npv2-proj-item.big img{height:100px;}
+.npv2-proj-col{display:flex;flex-direction:column;gap:5px;}
+.npv2-proj-col .npv2-proj-item img{height:47px;}
+.npv2-proj-overlay{position:absolute;inset:0;padding:8px 10px;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;}
+.npv2-proj-cat{font-size:0.44rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:2px;}
+.npv2-proj-name{font-size:0.58rem;font-weight:600;color:rgba(255,255,255,0.8);}
+
+/* ===================== */
+/* MOCK: LUMIERE SHOP (CHF 650) — kept from original */
+/* ===================== */
+.mock-lumiere{
+  background:#f9f9f7;font-family:'Inter',sans-serif;
+  min-height:560px;overflow:hidden;
+}
+.mlu-nav{
+  background:#fff;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid #eaeae6;
+}
+.mlu-logo{font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#111;}
+.mlu-links{display:flex;gap:20px;align-items:center;}
+.mlu-links span{font-size:0.72rem;color:#999;}
+.mlu-links .mlu-active{color:#111;font-weight:500;}
+.mlu-cart{
+  display:flex;align-items:center;gap:7px;
+  background:#111;color:#fff;font-size:0.7rem;font-weight:600;
+  padding:7px 14px;border-radius:6px;
+}
+.mlu-cart-count{background:#fff;color:#111;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;}
+.mlu-promo-bar{
+  background:#111;color:rgba(255,255,255,0.8);
+  text-align:center;font-size:0.65rem;letter-spacing:0.08em;padding:7px 20px;
+  display:flex;align-items:center;justify-content:center;gap:24px;
+}
+.mlu-promo-bar span::before{content:'✦ ';}
+.mlu-hero{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:220px;}
+.mlu-hero-content{padding:32px 28px;display:flex;flex-direction:column;justify-content:center;}
+.mlu-season{font-size:0.58rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#999;margin-bottom:10px;}
+.mlu-h1{font-size:1.8rem;font-weight:800;color:#111;letter-spacing:-0.04em;line-height:1.12;margin-bottom:10px;}
+.mlu-desc{font-size:0.72rem;color:#888;line-height:1.65;margin-bottom:16px;font-weight:300;}
+.mlu-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px;}
+.mlu-price{font-size:1.5rem;font-weight:800;color:#111;letter-spacing:-0.04em;}
+.mlu-old{font-size:0.85rem;color:#bbb;text-decoration:line-through;}
+.mlu-disc{font-size:0.62rem;font-weight:700;color:#e53e3e;background:#fff5f5;padding:3px 7px;border-radius:4px;}
+.mlu-btns{display:flex;gap:8px;}
+.mlu-btn1{background:#111;color:#fff;font-size:0.7rem;font-weight:600;padding:9px 18px;border-radius:6px;flex:1;text-align:center;}
+.mlu-btn2{background:#f0f0ec;color:#111;font-size:0.7rem;font-weight:500;padding:9px 12px;border-radius:6px;}
+.mlu-hero-img{overflow:hidden;}
+.mlu-hero-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.mlu-products{padding:20px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.mlu-prod{background:#fff;border-radius:10px;overflow:hidden;border:1px solid #eaeae6;}
+.mlu-prod-img{width:100%;height:80px;object-fit:cover;display:block;}
+.mlu-prod-info{padding:10px 12px;}
+.mlu-prod-name{font-size:0.68rem;font-weight:600;color:#111;margin-bottom:3px;}
+.mlu-prod-price{font-size:0.68rem;color:#555;}
+.mlu-prod-btn{width:100%;background:#111;color:#fff;font-size:0.6rem;font-weight:600;padding:5px;text-align:center;margin-top:7px;border-radius:5px;border:none;cursor:pointer;}
+.mlu-trust{background:#111;padding:12px 28px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:8px;}
+.mlu-ti{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.55);font-size:0.63rem;}
+
+/* ===================== */
+/* PAGES: ABLAUF, KONTAKT */
+/* ===================== */
+.ablauf-intro{background:var(--bk);padding:110px clamp(20px,5vw,80px) 0;position:relative;overflow:hidden;}
+.ablauf-intro::before{content:'';position:absolute;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.12),transparent 70%);top:40%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.ai-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:18px;position:relative;}
+.ai-title{font-size:clamp(3.5rem,9vw,8rem);font-weight:800;letter-spacing:-0.048em;line-height:1.0;color:#fff;position:relative;}
+.ai-title em{font-style:italic;color:rgba(255,255,255,0.32);}
+.ai-sub{font-size:1.05rem;font-weight:300;color:rgba(255,255,255,0.38);max-width:440px;margin:20px 0 80px;position:relative;}
+
+.timeline{background:var(--bk);padding:0 clamp(20px,5vw,80px) 120px;position:relative;}
+.timeline::before{content:'';position:absolute;left:clamp(20px,5vw,80px);top:0;bottom:0;width:1px;background:rgba(255,255,255,0.07);}
+.tl-item{display:grid;grid-template-columns:36px 1fr 1fr;gap:0 60px;padding:80px 0;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.tl-item.up{opacity:1;transform:translateY(0);}
+.tl-item:last-child{border-bottom:none;}
+.tl-dot{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.12);background:var(--bk);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.28);flex-shrink:0;margin-top:4px;position:relative;z-index:1;transition:all 0.4s;}
+.tl-item.up .tl-dot{border-color:var(--ac);color:var(--ac);}
+.tl-timing{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ac);margin-bottom:12px;}
+.tl-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:14px;}
+.tl-desc{font-size:0.88rem;color:rgba(255,255,255,0.42);line-height:1.75;font-weight:300;max-width:400px;margin-bottom:18px;}
+.tl-tag{display:inline-block;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;background:rgba(0,113,227,0.1);border:1px solid rgba(0,113,227,0.22);color:#60a5fa;padding:5px 14px;border-radius:6px;text-transform:uppercase;}
+.tl-box-label{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:12px;}
+.tl-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px 22px;}
+.tl-box ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.tl-box li{display:flex;align-items:flex-start;gap:9px;font-size:0.8rem;color:rgba(255,255,255,0.5);line-height:1.5;}
+.tl-box li::before{content:'→';color:rgba(0,113,227,0.55);font-size:0.72rem;flex-shrink:0;margin-top:2px;}
+.guarantees-section{background:var(--off);padding:80px clamp(20px,5vw,80px);}
+.g-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.04em;text-align:center;margin-bottom:50px;}
+.g-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:940px;margin:0 auto;}
+.g-card{background:var(--w);border-radius:16px;padding:30px 26px;border:1px solid var(--off2);text-align:center;}
+.g-icon{font-size:2rem;margin-bottom:14px;}
+.g-name{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;}
+.g-desc{font-size:0.8rem;color:var(--mu);line-height:1.65;font-weight:300;}
+
+.kontakt-wrap{min-height:calc(100vh - 52px);display:grid;grid-template-columns:1fr 1fr;}
+.k-left{background:var(--bk);padding:80px clamp(24px,5%,72px);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.k-left::before{content:'';position:absolute;width:500px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.14),transparent 70%);bottom:-100px;right:-100px;pointer-events:none;}
+.kl-label{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#60a5fa;margin-bottom:18px;}
+.kl-title{font-size:clamp(2.5rem,4.5vw,4.5rem);font-weight:800;letter-spacing:-0.045em;line-height:1.04;color:#fff;margin-bottom:18px;position:relative;}
+.kl-sub{font-size:0.95rem;color:rgba(255,255,255,0.4);font-weight:300;line-height:1.7;margin-bottom:44px;position:relative;max-width:360px;}
+.k-facts{display:flex;flex-direction:column;gap:14px;position:relative;}
+.k-fact{display:flex;align-items:center;gap:14px;}
+.kf-icon{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.kf-text{font-size:0.85rem;color:rgba(255,255,255,0.55);}
+.kf-text strong{color:#fff;display:block;font-weight:600;margin-bottom:1px;}
+.k-right{background:var(--off);padding:80px clamp(24px,5%,72px);display:flex;flex-direction:column;justify-content:center;}
+.kr-title{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:6px;}
+.kr-sub{font-size:0.85rem;color:var(--mu);margin-bottom:28px;font-weight:300;}
+.pkg-selector{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}
+.pkg-opt{border:1.5px solid var(--off2);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--w);position:relative;-webkit-tap-highlight-color:transparent;user-select:none;}
+.pkg-opt input{position:absolute;opacity:0;pointer-events:none;}
+.pkg-opt:hover{border-color:var(--ac);background:rgba(0,113,227,0.03);}
+.pkg-opt.sel{border-color:var(--ac);background:rgba(0,113,227,0.06);}
+.pkg-opt.sel .po-price{color:var(--ac);}
+.po-badge{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:0.55rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:var(--ac);color:#fff;padding:2px 8px;border-radius:100px;white-space:nowrap;}
+.po-price{font-size:1.1rem;font-weight:800;letter-spacing:-0.03em;color:var(--t);margin-bottom:2px;transition:color 0.2s;}
+.po-name{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--li);font-weight:500;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.f-group{margin-bottom:14px;}
+.f-label{display:block;font-size:0.7rem;font-weight:600;color:var(--li);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px;}
+.f-input{width:100%;background:var(--w);border:1.5px solid transparent;border-radius:11px;padding:12px 15px;font-family:var(--font);font-size:0.875rem;color:var(--t);outline:none;transition:all 0.2s;-webkit-appearance:none;}
+.f-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(0,113,227,0.09);}
+.f-input::placeholder{color:#ccc;}
+textarea.f-input{resize:vertical;min-height:90px;}
+.submit-btn{width:100%;padding:14px;background:var(--ac);color:#fff;font-family:var(--font);font-size:0.95rem;font-weight:600;border:none;border-radius:100px;cursor:pointer;margin-top:6px;transition:all 0.2s;}
+.submit-btn:hover{background:var(--ach);transform:scale(1.01);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.form-success{display:none;text-align:center;padding:50px 20px;}
+.form-success.show{display:block;}
+.fs-icon{width:68px;height:68px;border-radius:50%;background:rgba(0,113,227,0.07);border:2px solid rgba(0,113,227,0.18);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.8rem;}
+.fs-h{font-size:1.4rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:8px;}
+.fs-p{font-size:0.875rem;color:var(--mu);line-height:1.6;}
+.k-trust{background:var(--w);padding:24px clamp(20px,4vw,48px);border-top:1px solid var(--off2);display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.kt-item{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--mu);}
+
+.cta-bar{background:var(--bk);padding:80px clamp(20px,5vw,80px);text-align:center;position:relative;overflow:hidden;}
+.cta-bar::before{content:'';position:absolute;width:500px;height:350px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,113,227,0.14),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.cta-bar h2{font-size:clamp(2rem,5vw,4rem);font-weight:800;letter-spacing:-0.04em;color:#fff;margin-bottom:14px;position:relative;}
+.cta-bar p{color:rgba(255,255,255,0.4);font-size:0.95rem;font-weight:300;margin-bottom:32px;position:relative;}
+
+footer.site-footer{
+  background:#0a0a0f;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.footer-main{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:48px;
+  padding:64px clamp(20px,5vw,80px) 48px;
+  max-width:1400px;margin:0 auto;
+}
+.footer-brand{}
+.footer-logo-wrap{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.footer-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--ac);}
+.footer-logo-text{font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-0.02em;}
+.footer-logo-text sup{font-size:0.45rem;font-weight:500;color:rgba(255,255,255,0.35);vertical-align:super;margin-left:1px;}
+.footer-tagline{font-size:0.82rem;color:rgba(255,255,255,0.38);line-height:1.65;font-weight:300;max-width:240px;margin-bottom:22px;}
+.footer-contact-line{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+.footer-contact-line a{color:rgba(255,255,255,0.5);transition:color 0.2s;}
+.footer-contact-line a:hover{color:#fff;}
+.footer-contact-icon{font-size:0.75rem;width:20px;text-align:center;flex-shrink:0;}
+.footer-col-title{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:18px;}
+.footer-col-links{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.footer-col-links li a{font-size:0.82rem;color:rgba(255,255,255,0.48);cursor:pointer;transition:color 0.2s;display:block;}
+.footer-col-links li a:hover{color:#fff;}
+.footer-trust-bar{
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:24px clamp(20px,5vw,80px);
+  display:flex;align-items:center;justify-content:center;
+  gap:32px;flex-wrap:wrap;
+  max-width:1400px;margin:0 auto;
+}
+.ftr-badge{
+  display:flex;align-items:center;gap:8px;
+  font-size:0.72rem;color:rgba(255,255,255,0.32);
+}
+.ftr-badge-icon{font-size:0.85rem;}
+.footer-legal-bar{
+  border-top:1px solid rgba(255,255,255,0.05);
+  background:rgba(0,0,0,0.3);
+  padding:20px clamp(20px,5vw,80px);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+}
+.footer-legal-left{font-size:0.7rem;color:rgba(255,255,255,0.22);}
+.footer-legal-left strong{color:rgba(255,255,255,0.38);}
+.footer-legal-links{display:flex;gap:20px;list-style:none;flex-wrap:wrap;}
+.footer-legal-links li a{
+  font-size:0.7rem;color:rgba(255,255,255,0.28);cursor:pointer;transition:color 0.2s;
+}
+.footer-legal-links li a:hover{color:rgba(255,255,255,0.7);}
+.footer-legal-links li:not(:last-child){position:relative;}
+.footer-legal-links li:not(:last-child)::after{content:'·';position:absolute;right:-12px;color:rgba(255,255,255,0.12);}
+
+.legal-modal{
+  display:none;position:fixed;inset:0;z-index:3000;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.legal-modal.open{display:flex;}
+.legal-modal-box{
+  background:#fff;border-radius:20px;max-width:680px;width:100%;
+  max-height:80vh;overflow-y:auto;position:relative;
+  box-shadow:0 40px 100px rgba(0,0,0,0.4);
+}
+.legal-modal-header{
+  position:sticky;top:0;background:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px 16px;border-bottom:1px solid var(--off2);
+  z-index:1;
+}
+.legal-modal-title{font-size:1.2rem;font-weight:800;letter-spacing:-0.03em;}
+.legal-modal-close{
+  width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--off);display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;color:var(--mu);transition:all 0.2s;
+}
+.legal-modal-close:hover{background:var(--off2);}
+.legal-modal-body{padding:24px 28px 32px;font-size:0.85rem;color:var(--mu);line-height:1.75;font-weight:300;}
+.legal-modal-body h3{font-size:0.9rem;font-weight:700;color:var(--t);margin:20px 0 8px;}
+.legal-modal-body h3:first-child{margin-top:0;}
+.legal-modal-body p{margin-bottom:12px;}
+.legal-modal-body ul{padding-left:18px;margin-bottom:12px;}
+.legal-modal-body ul li{margin-bottom:5px;}
+.legal-modal-body a{color:var(--ac);}
+
+/* COOKIE BANNER */
+.cookie-banner{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:9999;
+  background:#fff;
+  border:1px solid var(--off2);
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.14),0 4px 16px rgba(0,0,0,0.08);
+  padding:20px 24px;
+  max-width:560px;width:calc(100% - 32px);
+  display:none;gap:16px;flex-direction:column;
+  animation:slideUpIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.cookie-banner.show{display:flex;}
+@keyframes slideUpIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.cookie-top{display:flex;align-items:flex-start;gap:14px;}
+.cookie-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px;}
+.cookie-text-wrap{}
+.cookie-title{font-size:0.9rem;font-weight:700;color:var(--t);margin-bottom:4px;letter-spacing:-0.01em;}
+.cookie-desc{font-size:0.78rem;color:var(--mu);line-height:1.55;font-weight:300;}
+.cookie-desc a{color:var(--ac);text-decoration:underline;text-underline-offset:2px;}
+.cookie-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.cookie-accept{flex:1;min-width:120px;background:var(--t);color:#fff;border:none;border-radius:100px;padding:11px 20px;font-family:var(--font);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.cookie-accept:hover{background:#333;transform:scale(1.02);}
+.cookie-decline{flex:1;min-width:120px;background:transparent;color:var(--mu);border:1.5px solid var(--off2);border-radius:100px;padding:11px 20px;font-family:var(--font);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+.cookie-decline:hover{border-color:#aaa;color:var(--t);}
+.cookie-settings{font-size:0.72rem;color:var(--li);text-align:center;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.cookie-settings:hover{color:var(--t);}
+@media(max-width:480px){
+  .cookie-banner{bottom:12px;border-radius:16px;padding:16px 18px;}
+  .cookie-btns{flex-direction:column;}
+  .cookie-accept,.cookie-decline{width:100%;min-width:unset;}
+}
+
+/* COOKIE SETTINGS MODAL */
+.cookie-settings-modal{
+  display:none;position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.cookie-settings-modal.open{display:flex;}
+.csm-box{
+  background:#fff;border-radius:20px;max-width:560px;width:100%;
+  max-height:85vh;overflow-y:auto;
+  box-shadow:0 40px 100px rgba(0,0,0,0.35);
+}
+.csm-header{
+  position:sticky;top:0;background:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 26px 16px;border-bottom:1px solid var(--off2);z-index:1;
+}
+.csm-title{font-size:1.1rem;font-weight:800;letter-spacing:-0.03em;}
+.csm-close{width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--mu);transition:all 0.2s;}
+.csm-close:hover{background:var(--off2);}
+.csm-body{padding:22px 26px 28px;}
+.csm-intro{font-size:0.82rem;color:var(--mu);line-height:1.6;margin-bottom:20px;font-weight:300;}
+.csm-category{border:1px solid var(--off2);border-radius:14px;padding:18px 20px;margin-bottom:12px;}
+.csm-cat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.csm-cat-name{font-size:0.88rem;font-weight:700;color:var(--t);}
+.csm-toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.csm-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.csm-slider{position:absolute;inset:0;border-radius:100px;cursor:pointer;background:#ddd;transition:background 0.2s;}
+.csm-slider::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;left:3px;top:3px;transition:transform 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.15);}
+.csm-toggle input:checked+.csm-slider{background:var(--ac);}
+.csm-toggle input:checked+.csm-slider::before{transform:translateX(20px);}
+.csm-toggle input:disabled+.csm-slider{opacity:0.6;cursor:not-allowed;}
+.csm-cat-desc{font-size:0.75rem;color:var(--mu);line-height:1.55;font-weight:300;}
+.csm-footer{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.csm-save{flex:1;background:var(--t);color:#fff;border:none;border-radius:100px;padding:12px 20px;font-family:var(--font);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.csm-save:hover{background:#333;}
+.csm-accept-all{flex:1;background:var(--ac);color:#fff;border:none;border-radius:100px;padding:12px 20px;font-family:var(--font);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.csm-accept-all:hover{background:var(--ach);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.35}}
+@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top;opacity:0}40%{transform:scaleY(1);transform-origin:top;opacity:1}80%{transform:scaleY(1);transform-origin:bottom;opacity:1}100%{transform:scaleY(0);transform-origin:bottom;opacity:0}}
+@keyframes scrollLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:1100px){
+  .hf-top{grid-template-columns:1fr;gap:40px;}
+  .hf-right{grid-template-columns:repeat(2,1fr);}
+  .tl-item{grid-template-columns:32px 1fr;gap:0 30px;}
+  .tl-item .tl-right{grid-column:2;margin-top:24px;}
+  .footer-main{grid-template-columns:1fr 1fr;gap:32px;}
+  .mpm-hero{grid-template-columns:1fr;}
+  .mpm-hero-right{display:none;}
+}
+@media(max-width:900px){
+  .pkg-row{grid-template-columns:1fr;max-width:400px;}
+  .compare-table{font-size:0.78rem;}
+  .ct-header,.ct-row{padding:12px 16px;}
+  .g-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto;}
+  .kontakt-wrap{grid-template-columns:1fr;}
+  .k-left{padding:70px clamp(24px,5%,60px) 50px;}
+  .ex-info{grid-template-columns:1fr;}
+  .trust-strip{grid-template-columns:repeat(2,1fr);}
+  .trust-item:nth-child(2)::after{display:none;}
+  .mlu-hero{grid-template-columns:1fr;}
+  .mlu-hero-img{display:none;}
+  .mlu-products{grid-template-columns:repeat(2,1fr);}
+  .footer-legal-bar{flex-direction:column;align-items:flex-start;}
+  .mfc-hero{height:auto;}
+  .mfc-stats{grid-template-columns:repeat(2,1fr);}
+  .mfc-news{grid-template-columns:1fr;}
+  .mfc-news-side{display:none;}
+}
+@media(max-width:700px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero h1{font-size:2.8rem;}
+  .hero{padding-bottom:80px;} /* ensure scroll indicator visible */
+  .hf-right{grid-template-columns:1fr;}
+  .pkg-selector{grid-template-columns:repeat(2,1fr);}
+  footer.site-footer .footer-main{grid-template-columns:1fr;}
+  .timeline::before{display:none;}
+  .tl-item{grid-template-columns:1fr;gap:16px;}
+  .tl-dot{display:none;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .ex-features-grid{grid-template-columns:1fr;}
+  .mpm-work{grid-template-columns:1fr 1fr;}
+  .hero-scroll{bottom:20px;}
+  .canvas-section{height:60vh;min-height:300px;}
+  .canvas-text h2{font-size:clamp(1.8rem,6vw,2.8rem);}
+  .canvas-text p{font-size:0.85rem;}
+  .footer-main{padding:32px 20px 24px;gap:24px;}
+  .footer-trust-bar{gap:12px;padding:16px 20px;justify-content:flex-start;}
+  .footer-legal-bar{padding:14px 20px;flex-direction:column;gap:10px;align-items:flex-start;}
+  .footer-legal-links{gap:14px;flex-wrap:wrap;}
+  .footer-tagline{max-width:100%;}
+  .mfc-nav .mfc-links{display:none;}
+  .mfc-nextmatch{height:auto;padding:12px 16px;flex-wrap:wrap;gap:8px;}
+}
+@media(max-width:480px){
+  .trust-strip{grid-template-columns:1fr;}
+  .trust-item::after{display:none!important;}
+  .mlu-products{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="goTo('home')">
+    <div class="nav-logo-dot"></div>
+    Webinity<sup>CH</sup>
+  </div>
+  <ul class="nav-links" id="desktopNav">
+    <li><a id="nav-home" onclick="goTo('home')">Start</a></li>
+    <li><a id="nav-pakete" onclick="goTo('pakete')">Pakete</a></li>
+    <li><a id="nav-beispiele" onclick="goTo('beispiele')">Beispiele</a></li>
+    <li><a id="nav-ablauf" onclick="goTo('ablauf')">Ablauf</a></li>
+    <li><a id="nav-kontakt" class="nav-cta-link" onclick="goTo('kontakt')">Anfragen</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="goTo('home')">Start</a>
+  <a onclick="goTo('pakete')">Pakete</a>
+  <a onclick="goTo('beispiele')">Beispiele</a>
+  <a onclick="goTo('ablauf')">Ablauf</a>
+  <a onclick="goTo('kontakt')" style="color:var(--ac);font-weight:600">Anfragen →</a>
+</div>
+
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <canvas id="heroParticles"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-body">
+      <div class="hero-eyebrow">Made in Switzerland</div>
+      <h1><span class="hl">Websites,<br>die Kunden<br>bringen.</span></h1>
+      <p class="hero-sub">Modernes Webdesign – präzise, hochwertig und auf Conversion ausgelegt. Ab CHF 100.</p>
+      <div class="hero-btns">
+        <button class="btn btn-white" onclick="goTo('kontakt')">Projekt starten →</button>
+        <button class="btn btn-ghost-w" onclick="goTo('beispiele')">Beispiele ansehen</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none"><rect x="1" y="1" width="12" height="18" rx="6" stroke="white" stroke-width="1.5"/><circle cx="7" cy="6" r="2" fill="white"/></svg>
+      Scroll
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-item reveal"><div class="trust-num">50<span>+</span></div><div class="trust-label">Websites erstellt</div></div>
+    <div class="trust-item reveal" style="transition-delay:.07s"><div class="trust-num">5.0<span>★</span></div><div class="trust-label">Ø Bewertung</div></div>
+    <div class="trust-item reveal" style="transition-delay:.14s"><div class="trust-num">7<span> Tage</span></div><div class="trust-label">Ø Lieferzeit</div></div>
+    <div class="trust-item reveal" style="transition-delay:.21s"><div class="trust-num">100<span>%</span></div><div class="trust-label">Schweizer Qualität</div></div>
+  </div>
+
+  <section class="home-features">
+    <canvas id="gridCanvas"></canvas>
+    <div class="hf-top">
+      <div class="reveal">
+        <div class="hf-label">Warum Webinity</div>
+        <h2 class="hf-title">Nicht irgendeine Website.<br>Deine Website.</h2>
+        <p class="hf-desc">Professionelle Websites, conversion-optimiert und passend zu deiner Marke – für CHF 100 bis CHF 650. Einmalig, kein Abo.</p>
+        <button class="btn btn-primary" onclick="goTo('pakete')">Pakete ansehen →</button>
+      </div>
+      <div class="hf-right reveal" style="transition-delay:.1s">
+        <div class="hf-card" onclick="goTo('pakete')"><div class="hf-card-icon">⚡</div><div class="hf-card-title">Schnell geliefert</div><div class="hf-card-desc">Starter in 4–7 Tagen. Premium in 6–8 Tagen. Shop in 10–16 Tagen.</div></div>
+        <div class="hf-card" onclick="goTo('beispiele')"><div class="hf-card-icon">🎨</div><div class="hf-card-title">Einzigartiges Design</div><div class="hf-card-desc">Professionelles Design, conversion-optimiert und passend zu deiner Marke.</div></div>
+        <div class="hf-card" onclick="goTo('ablauf')"><div class="hf-card-icon">🔍</div><div class="hf-card-title">Volle Transparenz</div><div class="hf-card-desc">Du siehst das Design bevor du bezahlst. Kein Risiko, keine Überraschungen.</div></div>
+        <div class="hf-card" onclick="goTo('kontakt')"><div class="hf-card-icon">🇨🇭</div><div class="hf-card-title">Made in Switzerland</div><div class="hf-card-desc">Lokal, auf Deutsch, mit Schweizer Qualitätsanspruch.</div></div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="pkg-preview">
+    <div class="pp-header reveal">
+      <div class="pp-label">Pakete</div>
+      <h2 class="pp-title">Transparent.<br>Fair. Präzise.</h2>
+      <p class="pp-sub">Drei klare Angebote – ohne versteckte Kosten, ohne Abos.</p>
+    </div>
+    <div class="pkg-row">
+      <div class="pkg-card reveal" style="transition-delay:.05s">
+        <span class="pkg-tier">Starter</span>
+        <div class="pkg-name">Einfache Website</div>
+        <div class="pkg-price"><sup>CHF </sup>100</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Bis zu 5 Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Responsives Design</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Kontaktformular & SEO</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Lieferung in 4–7 Tagen</div>
+        <button class="pkg-btn ol" onclick="goToPkg('100')">Anfragen</button>
+      </div>
+      <div class="pkg-card feat reveal" style="transition-delay:.1s">
+        <span class="pkg-tier">⚡ Beliebt</span>
+        <div class="pkg-name">Premium Website</div>
+        <div class="pkg-price"><sup>CHF </sup>250</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Unbegrenzte Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Animationen & 3D-Elemente</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Vollständige SEO</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>3x Überarbeitungen</div>
+        <button class="pkg-btn blue" onclick="goToPkg('250')">Jetzt anfragen →</button>
+      </div>
+      <div class="pkg-card reveal" style="transition-delay:.15s">
+        <span class="pkg-tier">All-in-One</span>
+        <div class="pkg-name">Shop + Komplett</div>
+        <div class="pkg-price"><sup>CHF </sup>650</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Unbegrenzte Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>E-Commerce / Shop</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>CMS & 30 Tage Support</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Copywriting inklusive</div>
+        <button class="pkg-btn ol" onclick="goToPkg('650')">Anfragen</button>
+      </div>
+    </div>
+    <div class="reveal" style="text-align:center">
+      <button class="btn btn-outline" onclick="goTo('pakete')">Alle Details ansehen →</button>
+    </div>
+  </section>
+
+  <section class="testi-section">
+    <div class="testi-head reveal">
+      <div class="testi-label">Kundenstimmen</div>
+      <h2 class="testi-title">Was unsere Kunden sagen.</h2>
+    </div>
+    <div class="testi-wrap">
+      <div class="testi-track">
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Webinity hat unsere alte Baukasten-Seite durch ein echtes Meisterwerk ersetzt. Wir bekommen seitdem doppelt so viele Anfragen."</p><div class="t-author"><div class="t-av" style="background:#e8f5e9;color:#2e7d32">TM</div><div><div class="t-name">Thomas M.</div><div class="t-role">Inhaber, TM Sanitär GmbH</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Professionell, schnell und bezahlbar. In wenigen Tagen hatte ich eine Website, die meine Konkurrenten alt aussehen lässt."</p><div class="t-author"><div class="t-av" style="background:#e3f2fd;color:#1565c0">SK</div><div><div class="t-name">Sarah K.</div><div class="t-role">Freelance Fotografin, Luzern</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Unser Online-Shop läuft perfekt. Die Integration war reibungslos und der Support immer erreichbar. Klare Empfehlung!"</p><div class="t-author"><div class="t-av" style="background:#e0f7fa;color:#006064">RP</div><div><div class="t-name">Reto P.</div><div class="t-role">CEO, SwissGadgets AG</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Die 3D-Animationen auf unserer Website haben jeden Besucher begeistert. Buchungen sind sofort gestiegen."</p><div class="t-author"><div class="t-av" style="background:#f3e5f5;color:#6a1b9a">LA</div><div><div class="t-name">Livia A.</div><div class="t-role">Marketing Lead, TechZH</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Unser Restaurant sieht jetzt aus wie ein 5-Sterne-Betrieb online. Reservierungen um 40% gestiegen!"</p><div class="t-author"><div class="t-av" style="background:#fff3e0;color:#e65100">MV</div><div><div class="t-name">Marco V.</div><div class="t-role">Inhaber, Ristorante Da Marco</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Für CHF 100 eine vollständige Website zu bekommen ist unglaublich. Das Preis-Leistungs-Verhältnis ist unschlagbar."</p><div class="t-author"><div class="t-av" style="background:#e8eaf6;color:#283593">JW</div><div><div class="t-name">Jonas W.</div><div class="t-role">Startup-Gründer, Basel</div></div></div></div>
+        <!-- duplicate for infinite scroll -->
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Webinity hat unsere alte Baukasten-Seite durch ein echtes Meisterwerk ersetzt. Wir bekommen seitdem doppelt so viele Anfragen."</p><div class="t-author"><div class="t-av" style="background:#e8f5e9;color:#2e7d32">TM</div><div><div class="t-name">Thomas M.</div><div class="t-role">Inhaber, TM Sanitär GmbH</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Professionell, schnell und bezahlbar. In wenigen Tagen hatte ich eine Website, die meine Konkurrenten alt aussehen lässt."</p><div class="t-author"><div class="t-av" style="background:#e3f2fd;color:#1565c0">SK</div><div><div class="t-name">Sarah K.</div><div class="t-role">Freelance Fotografin, Luzern</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Unser Online-Shop läuft perfekt. Die Integration war reibungslos und der Support immer erreichbar. Klare Empfehlung!"</p><div class="t-author"><div class="t-av" style="background:#e0f7fa;color:#006064">RP</div><div><div class="t-name">Reto P.</div><div class="t-role">CEO, SwissGadgets AG</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Die 3D-Animationen auf unserer Website haben jeden Besucher begeistert. Buchungen sind sofort gestiegen."</p><div class="t-author"><div class="t-av" style="background:#f3e5f5;color:#6a1b9a">LA</div><div><div class="t-name">Livia A.</div><div class="t-role">Marketing Lead, TechZH</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Unser Restaurant sieht jetzt aus wie ein 5-Sterne-Betrieb online. Reservierungen um 40% gestiegen!"</p><div class="t-author"><div class="t-av" style="background:#fff3e0;color:#e65100">MV</div><div><div class="t-name">Marco V.</div><div class="t-role">Inhaber, Ristorante Da Marco</div></div></div></div>
+        <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">„Für CHF 100 eine vollständige Website zu bekommen ist unglaublich. Das Preis-Leistungs-Verhältnis ist unschlagbar."</p><div class="t-author"><div class="t-av" style="background:#e8eaf6;color:#283593">JW</div><div><div class="t-name">Jonas W.</div><div class="t-role">Startup-Gründer, Basel</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-cta">
+    <div class="hcta-label">Bereit?</div>
+    <h2 class="hcta-title">Deine Website.<br>Dein Erfolg.</h2>
+    <p class="hcta-sub">Kein Abo. Kein Risiko. Nur Ergebnisse – made in Switzerland 🇨🇭</p>
+    <button class="btn btn-white" style="font-size:1rem;padding:15px 36px" onclick="goTo('kontakt')">Kostenlos anfragen →</button>
+  </section>
+  <div id="footer-home"></div>
+</div>
+
+<!-- PAGE: PAKETE -->
+<div class="page" id="page-pakete">
+  <div class="page-hero-dark">
+    <div class="phd-label">Pakete</div>
+    <h1 class="phd-title">Transparent.<br>Fair. Präzise.</h1>
+    <p class="phd-sub">Drei klare Angebote – ohne versteckte Kosten, ohne Abos.</p>
+  </div>
+  <div class="packages-section">
+    <div class="pkg-row" style="margin-bottom:0">
+      <div class="pkg-card reveal">
+        <span class="pkg-tier">Starter</span>
+        <div class="pkg-name">Einfache Website</div>
+        <div class="pkg-price"><sup>CHF </sup>100</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Bis zu 5 Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Responsives Design (Mobile & Desktop)</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Kontaktformular</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>SEO-Grundoptimierung</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Lieferung in 4–7 Tagen</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>1x kostenlose Überarbeitung</div>
+        <button class="pkg-btn ol" onclick="goToPkg('100')">Anfragen</button>
+      </div>
+      <div class="pkg-card feat reveal" style="transition-delay:.08s">
+        <span class="pkg-tier">⚡ Beliebt</span>
+        <div class="pkg-name">Premium Website</div>
+        <div class="pkg-price"><sup>CHF </sup>250</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Unbegrenzte Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Modernes Design mit Animationen</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>3D-Elemente & Scroll-Effekte</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Vollständige SEO-Optimierung</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Google Analytics Integration</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Performance-Optimierung</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>3x kostenlose Überarbeitungen</div>
+        <button class="pkg-btn blue" onclick="goToPkg('250')">Jetzt anfragen →</button>
+      </div>
+      <div class="pkg-card reveal" style="transition-delay:.16s">
+        <span class="pkg-tier">All-in-One</span>
+        <div class="pkg-name">Shop + Komplett</div>
+        <div class="pkg-price"><sup>CHF </sup>650</div>
+        <div class="pkg-muted">Einmalig · Kein Abo</div>
+        <hr class="pkg-div">
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Unbegrenzte Seiten</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>E-Commerce / Online-Shop</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Zahlungsintegration (Stripe etc.)</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Premium Animationen & 3D</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>Copywriting inklusive</div>
+        <div class="pkg-feat"><span class="pkg-chk">✓</span>30 Tage Support nach Launch</div>
+        <button class="pkg-btn ol" onclick="goToPkg('650')">Anfragen</button>
+      </div>
+    </div>
+  </div>
+  <div class="compare-section">
+    <h2 class="compare-title reveal">Paket-Vergleich</h2>
+    <p class="compare-sub reveal">Was ist in welchem Paket enthalten?</p>
+    <div class="compare-table reveal">
+      <div class="ct-header"><div>Feature</div><div>CHF 100</div><div>CHF 250</div><div>CHF 650</div></div>
+      <div class="ct-row"><div>Anzahl Seiten</div><div class="ct-val">bis 5</div><div class="ct-val h">∞</div><div class="ct-val">∞</div></div>
+      <div class="ct-row"><div>Responsives Design</div><div class="ct-val y">✓</div><div class="ct-val y">✓</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>Animationen</div><div class="ct-val n">–</div><div class="ct-val y">✓</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>3D-Elemente</div><div class="ct-val n">–</div><div class="ct-val y">✓</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>SEO-Optimierung</div><div class="ct-val">Basis</div><div class="ct-val h">Vollständig</div><div class="ct-val h">Vollständig</div></div>
+      <div class="ct-row"><div>Google Analytics</div><div class="ct-val n">–</div><div class="ct-val y">✓</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>E-Commerce / Shop</div><div class="ct-val n">–</div><div class="ct-val n">–</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>Copywriting</div><div class="ct-val n">–</div><div class="ct-val n">–</div><div class="ct-val y">✓</div></div>
+      <div class="ct-row"><div>Überarbeitungen</div><div class="ct-val">1x</div><div class="ct-val h">3x</div><div class="ct-val">∞</div></div>
+      <div class="ct-row"><div>Support nach Launch</div><div class="ct-val n">–</div><div class="ct-val n">–</div><div class="ct-val y">30 Tage</div></div>
+      <div class="ct-row"><div>Lieferzeit</div><div class="ct-val">4–7 T.</div><div class="ct-val">6–8 T.</div><div class="ct-val">10–16 T.</div></div>
+    </div>
+  </div>
+  <div class="faq-section">
+    <h2 class="faq-title reveal">Häufige Fragen</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal"><div class="faq-q">Was ist im Preis enthalten?</div><div class="faq-a"><div class="faq-a-in">Alle genannten Features sind im Einmalpreis enthalten. Wir liefern dir den fertigen Website-Code. Domain, Hosting und E-Mail-Adressen musst du selbst einrichten – wir helfen dir gerne mit Empfehlungen.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Was ist NICHT enthalten?</div><div class="faq-a"><div class="faq-a-in">Domain, Hosting und E-Mail-Adressen sind nicht im Paket enthalten – darum musst du dich selbst kümmern. Wir liefern den fertigen Website-Code. Die laufenden Kosten für Hosting & Domain trägst du selbst.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Was passiert nach der Lieferung?</div><div class="faq-a"><div class="faq-a-in">Kleine Anpassungen nach dem Launch (z.B. Texte ändern, Farbe anpassen) machen wir kostenlos. Grössere Änderungen wie neue Seiten, neue Funktionen oder Redesigns werden nach Aufwand berechnet.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Wie lange dauert die Lieferung?</div><div class="faq-a"><div class="faq-a-in">Starter in 4–7 Tagen, Premium in 6–8 Tagen, All-in-One in 10–16 Tagen – je nach Umfang und Feedback-Geschwindigkeit.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Kann ich später upgraden?</div><div class="faq-a"><div class="faq-a-in">Ja. Du kannst jederzeit upgraden – wir rechnen die Differenz fair an. Viele Kunden starten mit dem Starter-Paket.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Was muss ich vorbereiten?</div><div class="faq-a"><div class="faq-a-in">Nichts. Schreib uns einfach. Wir klären alles in einem kurzen Gespräch – Texte, Bilder, Ziele.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-q">Gibt es eine Garantie?</div><div class="faq-a"><div class="faq-a-in">Du siehst das Konzept bevor du bezahlst. Gefällt es dir nicht, kostet dich das Briefing nichts.</div></div></div>
+    </div>
+  </div>
+  <div class="cta-bar">
+    <h2>Bereit zu starten?</h2>
+    <p>Kostenlos anfragen – wir melden uns innert 24 Stunden.</p>
+    <button class="btn btn-white" onclick="goTo('kontakt')">Jetzt anfragen →</button>
+  </div>
+  <div id="footer-pakete"></div>
+</div>
+
+<!-- PAGE: BEISPIELE -->
+<div class="page" id="page-beispiele">
+  <div class="examples-page-hero">
+    <div class="phd-label">Beispiele</div>
+    <h1 class="phd-title">Qualität,<br>die überzeugt.</h1>
+    <p class="phd-sub">Drei echte Website-Designs – für jedes Paket ein konkretes Beispiel.</p>
+  </div>
+  <div class="examples-section">
+
+    <!-- HINWEIS BANNER -->
+    <div class="ex-hint-banner">
+      <div class="ex-hint-left">
+        <div class="ex-hint-icon">✦</div>
+        <div>
+          <div class="ex-hint-title">Das sind Beispiele — dein Design wird individuell auf dich zugeschnitten.</div>
+          <div class="ex-hint-sub">Für mehr Inspirationen oder einen kostenlosen Erst-Entwurf: <a href="mailto:info@webinity.ch">info@webinity.ch</a></div>
+        </div>
+      </div>
+      <button class="ex-hint-btn" onclick="goTo('kontakt')">Kostenlosen Entwurf anfragen →</button>
+    </div>
+
+    <!-- ========= BEISPIEL 1: FC Alpinus (CHF 100) ========= -->
+    <div class="ex-item reveal">
+      <div class="ex-pkg-pill starter"><span class="pill-dot"></span>Starter · CHF 100</div>
+      <div class="ex-header">
+        <div class="ex-header-left">
+          <div class="ex-project-name">FC Alpinus</div>
+          <div class="ex-project-sub">Fussballverein · Luzern — modern, vereinsnah, mobiloptimiert</div>
+        </div>
+        <div class="ex-price-tag"><span>Einmalig</span>CHF 100</div>
+      </div>
+      <div class="browser">
+        <div class="browser-bar" style="background:#0b1220;">
+          <div class="bd" style="background:#ff5f57"></div>
+          <div class="bd" style="background:#ffbd2e"></div>
+          <div class="bd" style="background:#28c840"></div>
+          <div class="b-url-wrap"><div class="b-url" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5)"><span class="b-lock">🔒</span>fc-alpinus.ch</div></div>
+        </div>
+        <div class="mock-fca">
+          <!-- TOP PROMO BAR -->
+          <div class="mfca-top-bar">⚽ Nächstes Heimspiel: Sa 26. April · FC Alpinus vs SC Adler · 15:30 Uhr · Tickets verfügbar</div>
+          <!-- NAV -->
+          <div class="mfca-nav">
+            <div class="mfca-logo-wrap">
+              <svg class="mfca-crest-svg" viewBox="0 0 60 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 2L56 14V38C56 52 44 63 30 66C16 63 4 52 4 38V14L30 2Z" fill="#0a1d4a" stroke="#2563eb" stroke-width="2.5"/>
+                <path d="M30 8L50 18V38C50 50 41 59 30 62C19 59 10 50 10 38V18L30 8Z" fill="#0d2259"/>
+                <path d="M20 28 L30 16 L40 28 L36 28 L36 42 L24 42 L24 28 Z" fill="#fff"/>
+                <path d="M26 34 L34 34 L34 42 L26 42Z" fill="#1a4fa8"/>
+                <circle cx="30" cy="24" r="3" fill="#ffffff"/>
+                <path d="M15 38 Q30 50 45 38" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+                <text x="30" y="57" text-anchor="middle" font-size="6" fill="#93c5fd" font-weight="700" letter-spacing="2" font-family="Arial">FCA</text>
+              </svg>
+              <div class="mfca-name-block">
+                <div class="mfca-name">FC <span>Alpinus</span></div>
+                <div class="mfca-since">Seit 1923</div>
+              </div>
+            </div>
+            <div class="mfca-links">
+              <a class="mfca-act">Home</a>
+              <a>Mannschaft</a>
+              <a>Spiele</a>
+              <a>News</a>
+              <a>Shop</a>
+            </div>
+            <div class="mfca-ticket">🎟 Tickets</div>
+          </div>
+          <!-- HERO -->
+          <div class="mfca-hero">
+            <img class="mfca-hero-img" src="https://images.unsplash.com/photo-1459865264687-595d652de67e?w=900&q=80&fit=crop&crop=center" alt="Stadion" loading="lazy">
+            <div class="mfca-hero-overlay"></div>
+            <!-- Animated badge -->
+            <div class="mfca-live-badge">🔴 LIVE — 2:1 · 67'</div>
+            <div class="mfca-hero-content">
+              <div class="mfca-eyebrow">⚡ Saison 2024 / 25 · 2. Liga Interregional</div>
+              <div class="mfca-h1">Gemeinsam.<br><em>Stark.</em><br>Alpinus.</div>
+              <div class="mfca-sub">Leidenschaft, Teamgeist und Schweizer Stolz – seit über 100 Jahren kämpfen wir für unsere Region.</div>
+              <div class="mfca-btns">
+                <div class="mfca-btn1">⚽ Spielplan 2025</div>
+                <div class="mfca-btn2">Mannschaft →</div>
+              </div>
+            </div>
+            <!-- Float card: next match -->
+            <div class="mfca-match-card">
+              <div class="mfca-mc-label">NÄCHSTES HEIMSPIEL</div>
+              <div class="mfca-mc-teams">
+                <div class="mfca-mc-team">
+                  <svg viewBox="0 0 60 68" width="28" height="32" fill="none"><path d="M30 2L56 14V38C56 52 44 63 30 66C16 63 4 52 4 38V14L30 2Z" fill="#0a1d4a" stroke="#2563eb" stroke-width="2.5"/><path d="M20 28L30 16L40 28L36 28L36 42L24 42L24 28Z" fill="#fff"/></svg>
+                  <span>FC Alpinus</span>
+                </div>
+                <div class="mfca-mc-vs">VS</div>
+                <div class="mfca-mc-team">
+                  <div class="mfca-mc-shield" style="background:#c0392b">SC</div>
+                  <span>SC Adler</span>
+                </div>
+              </div>
+              <div class="mfca-mc-info">Sa, 26. April · 15:30 · Alp-Arena</div>
+            </div>
+          </div>
+          <!-- STATS BAR -->
+          <div class="mfca-stats">
+            <div class="mfca-stat"><div class="mfca-stat-n">3<span>.</span></div><div class="mfca-stat-l">Tabellenplatz</div></div>
+            <div class="mfca-stat"><div class="mfca-stat-n">18<span>–</span>5</div><div class="mfca-stat-l">Siege · Niederlagen</div></div>
+            <div class="mfca-stat"><div class="mfca-stat-n">62<span>+</span></div><div class="mfca-stat-l">Aktive Spieler</div></div>
+            <div class="mfca-stat"><div class="mfca-stat-n">4'200</div><div class="mfca-stat-l">Fans & Mitglieder</div></div>
+          </div>
+          <!-- TEAM PHOTO STRIP -->
+          <div class="mfca-team-strip">
+            <div class="mfca-team-label">MANNSCHAFT 2024/25</div>
+            <div class="mfca-team-photos">
+              <div class="mfca-tp"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=120&q=75&fit=crop&crop=face" alt="Spieler 1"><div class="mfca-tp-name">L. Brunner</div></div>
+              <div class="mfca-tp"><img src="https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=120&q=75&fit=crop&crop=face" alt="Spieler 2"><div class="mfca-tp-name">N. Keller</div></div>
+              <div class="mfca-tp"><img src="https://images.unsplash.com/photo-1530822847156-5df684ec5ee1?w=120&q=75&fit=crop&crop=face" alt="Spieler 3"><div class="mfca-tp-name">M. Senn</div></div>
+              <div class="mfca-tp"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&q=75&fit=crop&crop=face" alt="Spieler 4"><div class="mfca-tp-name">J. Odinga</div></div>
+              <div class="mfca-tp"><img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=120&q=75&fit=crop&crop=face" alt="Spieler 5"><div class="mfca-tp-name">T. Frei</div></div>
+              <div class="mfca-tp all"><span>+18</span><div class="mfca-tp-name">Alle</div></div>
+            </div>
+          </div>
+          <!-- NEWS GRID -->
+          <div class="mfca-news">
+            <div class="mfca-news-title-row"><span class="mfca-news-label">Aktuelles</span><span class="mfca-news-all">Alle News →</span></div>
+            <div class="mfca-news-grid">
+              <div class="mfca-news-main">
+                <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=700&q=80&fit=crop" alt="Match" loading="lazy">
+                <div class="mfca-news-overlay">
+                  <div class="mfca-news-cat">Spielbericht</div>
+                  <div class="mfca-news-ttl">4:0 gegen FC Bergheim – Dominante Vorstellung in der Alp-Arena</div>
+                </div>
+              </div>
+              <div class="mfca-news-side">
+                <div class="mfca-news-item">
+                  <img src="https://images.unsplash.com/photo-1606925797300-0b35e9d1794e?w=200&q=70&fit=crop" alt="Training" loading="lazy">
+                  <div class="mfca-news-item-text">
+                    <div class="mfca-news-item-cat">Transfer</div>
+                    <div class="mfca-news-item-ttl">Neuzugang Marco Senn verstärkt die Abwehr</div>
+                  </div>
+                </div>
+                <div class="mfca-news-item">
+                  <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=200&q=70&fit=crop" alt="Team" loading="lazy">
+                  <div class="mfca-news-item-text">
+                    <div class="mfca-news-item-cat">Jugend</div>
+                    <div class="mfca-news-item-ttl">U17 gewinnt Kantonsmeisterschaft 2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- FOOTER -->
+          <div class="mfca-footer">
+            <div class="mfca-ft-left">
+              <svg viewBox="0 0 60 68" width="22" height="25" fill="none"><path d="M30 2L56 14V38C56 52 44 63 30 66C16 63 4 52 4 38V14L30 2Z" fill="#0a1d4a" stroke="#2563eb" stroke-width="2.5"/><path d="M20 28L30 16L40 28L36 28L36 42L24 42L24 28Z" fill="#fff"/></svg>
+              <span class="mfca-ft-name">FC Alpinus</span>
+            </div>
+            <div class="mfca-ft-links"><span>Impressum</span><span>Datenschutz</span><span>Kontakt</span></div>
+            <div class="mfca-ft-social">
+              <div class="mfca-soc">f</div><div class="mfca-soc">▶</div><div class="mfca-soc">in</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ex-info">
+        <div class="ex-info-left">
+          <h3>Vereinsstolz trifft modernes Web.</h3>
+          <p>Dieses Starter-Paket zeigt, was CHF 100 für einen Fussballverein leisten: ein komplettes Vereins-Portal mit eigenem Wappen, Live-Ticker, Spielplan, News und Mannschaftsinfos. Sauber, mobiloptimiert und vereinsnah.</p>
+          <div class="ex-info-cta"><button class="btn btn-primary btn-sm" onclick="goToPkg('100')">So eine Website anfragen →</button></div>
+        </div>
+        <div>
+          <div class="ex-features-grid">
+            <div class="ex-feat-item">5 Seiten: Home, Mannschaft, Spiele, News, Kontakt</div>
+            <div class="ex-feat-item">Individuelles SVG-Wappen & Vereinsfarben</div>
+            <div class="ex-feat-item">Nächstes Spiel & Live-Ticker-Banner</div>
+            <div class="ex-feat-item">Responsives Design für Mobile & Desktop</div>
+            <div class="ex-feat-item">Vereinsfarben & SEO-Grundoptimierung</div>
+            <div class="ex-feat-item">Einmalig CHF 100 – kein Abo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= BEISPIEL 2: Premium Digital Agency (CHF 250) ========= -->
+    <div class="ex-item reveal">
+      <div class="ex-pkg-pill premium"><span class="pill-dot"></span>Premium · CHF 250</div>
+      <div class="ex-header">
+        <div class="ex-header-left">
+          <div class="ex-project-name">NEXUS Digital</div>
+          <div class="ex-project-sub">Digital-Agentur · Zürich — 3D WebGL, Animationen, interaktiv</div>
+        </div>
+        <div class="ex-price-tag" style="background:var(--ac)"><span>Einmalig</span>CHF 250</div>
+      </div>
+      <div class="browser">
+        <div class="browser-bar dark">
+          <div class="bd" style="background:#ff5f57"></div>
+          <div class="bd" style="background:#ffbd2e"></div>
+          <div class="bd" style="background:#28c840"></div>
+          <div class="b-url-wrap"><div class="b-url dark"><span class="b-lock">🔒</span>nexus-digital.ch</div></div>
+        </div>
+        <div class="mock-premium-v2">
+          <!-- WebGL 3D Canvas -->
+          <canvas class="nexus-canvas" id="nexusCanvas3D"></canvas>
+          <!-- NAV -->
+          <div class="npv2-nav">
+            <div class="npv2-logo">
+              <div class="npv2-logo-mark">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                  <polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="#fff" stroke-width="1.5" fill="none"/>
+                  <polygon points="12,6 18,9.5 18,14.5 12,18 6,14.5 6,9.5" fill="rgba(99,102,241,0.4)" stroke="#a5b4fc" stroke-width="1"/>
+                </svg>
+              </div>
+              <span>NEXUS</span>
+            </div>
+            <div class="npv2-links"><a class="npv2-act">Start</a><a>Leistungen</a><a>Projekte</a><a>Über uns</a></div>
+            <div class="npv2-btn">Projekt starten →</div>
+          </div>
+          <!-- HERO -->
+          <div class="npv2-hero">
+            <div class="npv2-hero-left">
+              <div class="npv2-pill"><span class="npv2-pill-dot"></span>🇨🇭 Premium Webdesign Zürich</div>
+              <div class="npv2-h1">We craft<br><span class="npv2-grad">digital worlds</span><br>that convert.</div>
+              <div class="npv2-sub">3D Animationen, WebGL Erlebnisse & interaktive Interfaces – CHF 250 einmalig.</div>
+              <div class="npv2-cta-row">
+                <div class="npv2-cta1">Projekt starten →</div>
+                <div class="npv2-cta2">Referenzen</div>
+              </div>
+              <!-- Live stats -->
+              <div class="npv2-stats-row">
+                <div class="npv2-stat-item"><div class="npv2-stat-n">98</div><div class="npv2-stat-l">PageSpeed</div></div>
+                <div class="npv2-stat-item"><div class="npv2-stat-n">4.8x</div><div class="npv2-stat-l">Mehr Leads</div></div>
+                <div class="npv2-stat-item"><div class="npv2-stat-n">0.6s</div><div class="npv2-stat-l">Load Time</div></div>
+              </div>
+            </div>
+            <div class="npv2-hero-right">
+              <!-- 3D floating card with live chart -->
+              <div class="npv2-float-card">
+                <div class="npv2-fc-header">
+                  <div class="npv2-fc-title">Website Performance</div>
+                  <div class="npv2-fc-live">● Live</div>
+                </div>
+                <div class="npv2-chart-wrap">
+                  <canvas class="nexus-mini-chart" id="nexusMiniChart" width="200" height="70"></canvas>
+                </div>
+                <div class="npv2-fc-metrics">
+                  <div class="npv2-metric"><div class="npv2-m-n">+312%</div><div class="npv2-m-l">Traffic</div></div>
+                  <div class="npv2-metric"><div class="npv2-m-n" style="color:#34d399">+48%</div><div class="npv2-m-l">Conversions</div></div>
+                  <div class="npv2-metric"><div class="npv2-m-n">CHF 250</div><div class="npv2-m-l">Einmalig</div></div>
+                </div>
+              </div>
+              <!-- Floating tech tags -->
+              <div class="npv2-tags">
+                <div class="npv2-tag t1">WebGL</div>
+                <div class="npv2-tag t2">3D Animation</div>
+                <div class="npv2-tag t3">Three.js</div>
+                <div class="npv2-tag t4">Scroll FX</div>
+              </div>
+            </div>
+          </div>
+          <!-- SCROLLING TECH STRIP -->
+          <div class="npv2-strip">
+            <div class="npv2-strip-track">
+              <span>WebGL</span><span>·</span><span>Three.js</span><span>·</span><span>GSAP</span><span>·</span><span>3D Scenes</span><span>·</span><span>Scroll Effects</span><span>·</span><span>Swiss Made</span><span>·</span><span>Performance 98</span><span>·</span><span>Responsive</span><span>·</span>
+              <span>WebGL</span><span>·</span><span>Three.js</span><span>·</span><span>GSAP</span><span>·</span><span>3D Scenes</span><span>·</span><span>Scroll Effects</span><span>·</span><span>Swiss Made</span><span>·</span><span>Performance 98</span><span>·</span><span>Responsive</span><span>·</span>
+            </div>
+          </div>
+          <!-- PROJECTS GRID -->
+          <div class="npv2-projects">
+            <div class="npv2-proj-header"><span class="npv2-ph-label">PROJEKTE</span><span class="npv2-ph-count">24 Referenzen</span></div>
+            <div class="npv2-proj-grid">
+              <div class="npv2-proj-item big">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop" alt="3D Project" loading="lazy">
+                <div class="npv2-proj-overlay">
+                  <div class="npv2-proj-cat">3D Experience</div>
+                  <div class="npv2-proj-name">SwissVault – Crypto Platform</div>
+                </div>
+              </div>
+              <div class="npv2-proj-col">
+                <div class="npv2-proj-item">
+                  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=75&fit=crop" alt="Dashboard" loading="lazy">
+                  <div class="npv2-proj-overlay">
+                    <div class="npv2-proj-cat">SaaS Dashboard</div>
+                    <div class="npv2-proj-name">Fintrack Analytics</div>
+                  </div>
+                </div>
+                <div class="npv2-proj-item">
+                  <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=75&fit=crop" alt="Corporate" loading="lazy">
+                  <div class="npv2-proj-overlay">
+                    <div class="npv2-proj-cat">Corporate Site</div>
+                    <div class="npv2-proj-name">Immobilien Zürich Nord</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ex-info">
+        <div class="ex-info-left">
+          <h3>Eine andere Dimension.</h3>
+          <p>Das Premium-Paket ist eine komplett andere Liga: Echte WebGL 3D-Szenen, animierte UI-Karten mit Live-Chart, ein scrollender Tech-Strip und eine interaktive Projektgalerie. Sieht teuer aus – kostet einmalig CHF 250.</p>
+          <div class="ex-info-cta"><button class="btn btn-primary btn-sm" onclick="goToPkg('250')">So eine Website anfragen →</button></div>
+        </div>
+        <div>
+          <div class="ex-features-grid">
+            <div class="ex-feat-item">Echte WebGL 3D-Hintergrundszene</div>
+            <div class="ex-feat-item">Animierte UI-Karten & Live-Charts</div>
+            <div class="ex-feat-item">Unbegrenzte Seiten + Blog & Portfolio</div>
+            <div class="ex-feat-item">Vollständige SEO + Google Analytics</div>
+            <div class="ex-feat-item">Performance-Optimierung (98 PageSpeed)</div>
+            <div class="ex-feat-item">3x kostenlose Überarbeitungen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= BEISPIEL 3: Lumière Shop (CHF 650) ========= -->
+    <div class="ex-item reveal" style="margin-bottom:0">
+      <div class="ex-pkg-pill allinone"><span class="pill-dot"></span>All-in-One · CHF 650</div>
+      <div class="ex-header">
+        <div class="ex-header-left">
+          <div class="ex-project-name">Lumière Shop</div>
+          <div class="ex-project-sub">E-Commerce · Genf — vollständiger Online-Shop mit Zahlungsintegration</div>
+        </div>
+        <div class="ex-price-tag" style="background:#7c3aed"><span>Einmalig</span>CHF 650</div>
+      </div>
+      <div class="browser">
+        <div class="browser-bar light">
+          <div class="bd" style="background:#ff5f57"></div>
+          <div class="bd" style="background:#ffbd2e"></div>
+          <div class="bd" style="background:#28c840"></div>
+          <div class="b-url-wrap"><div class="b-url light"><span class="b-lock">🔒</span>lumiere-shop.ch</div></div>
+        </div>
+        <div class="mock-lumiere">
+          <div class="mlu-promo-bar"><span>Gratis Versand ab CHF 60</span><span>Swiss Made · Nachhaltig</span><span>30 Tage Rückgabe</span></div>
+          <div class="mlu-nav">
+            <div class="mlu-logo">LUMIÈRE</div>
+            <div class="mlu-links"><span class="mlu-active">Home</span><span>Kollektionen</span><span>Neuheiten</span><span>Sale</span><span>Über uns</span></div>
+            <div class="mlu-cart">🛒 <span class="mlu-cart-count">2</span> Warenkorb</div>
+          </div>
+          <div class="mlu-hero">
+            <div class="mlu-hero-content">
+              <div class="mlu-season">✦ Neue Frühlingskollektion 2025</div>
+              <div class="mlu-h1">Handgemacht.<br>Einzigartig.<br>Swiss Quality.</div>
+              <div class="mlu-desc">Handgefertigte Kerzen, Seifen und Duftöle – nachhaltig produziert in der Romandie seit 2018.</div>
+              <div class="mlu-price-row"><div class="mlu-price">CHF 38.–</div><div class="mlu-old">CHF 52.–</div><div class="mlu-disc">–27%</div></div>
+              <div class="mlu-btns"><div class="mlu-btn1">In den Warenkorb</div><div class="mlu-btn2">♡ Merken</div></div>
+            </div>
+            <div class="mlu-hero-img"><img src="https://images.unsplash.com/photo-1603912699214-92627f304eb6?w=600&q=80&fit=crop" alt="Candles" loading="lazy"></div>
+          </div>
+          <div class="mlu-products">
+            <div class="mlu-prod"><img class="mlu-prod-img" src="https://images.unsplash.com/photo-1600857544200-b2f468e9b2c0?w=200&q=75&fit=crop" alt="Soap" loading="lazy"><div class="mlu-prod-info"><div class="mlu-prod-name">Lavendel Seife</div><div class="mlu-prod-price">CHF 14.–</div><div class="mlu-prod-btn">Kaufen</div></div></div>
+            <div class="mlu-prod"><img class="mlu-prod-img" src="https://images.unsplash.com/photo-1602607513064-78f0c6d28e6a?w=200&q=75&fit=crop" alt="Candle" loading="lazy"><div class="mlu-prod-info"><div class="mlu-prod-name">Bienenwachs Kerze</div><div class="mlu-prod-price">CHF 28.–</div><div class="mlu-prod-btn">Kaufen</div></div></div>
+            <div class="mlu-prod"><img class="mlu-prod-img" src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=200&q=75&fit=crop" alt="Oil" loading="lazy"><div class="mlu-prod-info"><div class="mlu-prod-name">Eucalyptus Öl</div><div class="mlu-prod-price">CHF 22.–</div><div class="mlu-prod-btn">Kaufen</div></div></div>
+            <div class="mlu-prod"><img class="mlu-prod-img" src="https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=200&q=75&fit=crop" alt="Cream" loading="lazy"><div class="mlu-prod-info"><div class="mlu-prod-name">Rosen Körpercreme</div><div class="mlu-prod-price">CHF 34.–</div><div class="mlu-prod-btn">Kaufen</div></div></div>
+          </div>
+          <div class="mlu-trust"><div class="mlu-ti"><span>🇨🇭</span><span>Swiss Made</span></div><div class="mlu-ti"><span>🚚</span><span>Gratis ab CHF 60</span></div><div class="mlu-ti"><span>↩️</span><span>30 Tage Rückgabe</span></div><div class="mlu-ti"><span>🔒</span><span>Sichere Zahlung</span></div><div class="mlu-ti"><span>🌿</span><span>Nachhaltig</span></div></div>
+        </div>
+      </div>
+      <div class="ex-info">
+        <div class="ex-info-left">
+          <h3>Komplett. Shop. Alles inklusive.</h3>
+          <p>Das All-in-One-Paket liefert einen vollwertigen Online-Shop mit Warenkorb, Zahlungsintegration (Stripe, Twint, PayPal) und 30 Tagen Support nach dem Launch.</p>
+          <div class="ex-info-cta"><button class="btn btn-primary btn-sm" onclick="goToPkg('650')">So eine Website anfragen →</button></div>
+        </div>
+        <div>
+          <div class="ex-features-grid">
+            <div class="ex-feat-item">Vollwertiger Shop, unbegrenzte Produkte</div>
+            <div class="ex-feat-item">Zahlungsintegration (Stripe, Twint, PayPal)</div>
+            <div class="ex-feat-item">Automatische Bestätigungsemails</div>
+            <div class="ex-feat-item">Premium Animationen & modernes UI</div>
+            <div class="ex-feat-item">Copywriting für alle Seiten inklusive</div>
+            <div class="ex-feat-item">30 Tage Support nach Launch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /examples-section -->
+  <div class="cta-bar" style="margin-top:0">
+    <h2>Deine Idee.<br>Unser Handwerk.</h2>
+    <p>Lass uns zusammen deine Website bauen.</p>
+    <button class="btn btn-white" onclick="goTo('kontakt')">Jetzt anfragen →</button>
+  </div>
+  <div id="footer-beispiele"></div>
+</div>
+
+<!-- PAGE: ABLAUF -->
+<div class="page" id="page-ablauf">
+  <div class="ablauf-intro">
+    <div class="ai-label">So läuft's ab</div>
+    <h1 class="ai-title">Von Idee<br><em>zu Launch.</em></h1>
+    <p class="ai-sub">Vier klare Schritte – schnell, transparent und ohne Überraschungen.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item" id="tl1">
+      <div class="tl-dot">1</div>
+      <div><div class="tl-timing">Kostenlos & unverbindlich</div><div class="tl-title">Briefing &<br>Erstgespräch</div><div class="tl-desc">Du schreibst uns, wir melden uns innerhalb von 24 Stunden.</div><div class="tl-tag">Tag 1</div></div>
+      <div><div class="tl-box-label">Was wir besprechen</div><div class="tl-box"><ul><li>Dein Business & deine Zielgruppe</li><li>Design-Vorstellungen & Referenzen</li><li>Welches Paket am besten passt</li><li>Inhalte, Texte, Bilder & Logos</li><li>Wunschtermin & nächste Schritte</li></ul></div></div>
+    </div>
+    <div class="tl-item" id="tl2">
+      <div class="tl-dot">2</div>
+      <div><div class="tl-timing">1 – 2 Tage</div><div class="tl-title">Design &<br>Konzept</div><div class="tl-desc">Wir entwickeln ein erstes visuelles Konzept – du gibst Feedback bevor Code geschrieben wird.</div><div class="tl-tag">Tag 2 – 3</div></div>
+      <div><div class="tl-box-label">Deliverables</div><div class="tl-box"><ul><li>Moodboard & Farbkonzept</li><li>Layout-Entwurf (Desktop & Mobile)</li><li>Typografie & Designsprache</li><li>Bis zu 2 Revisionsrunden im Konzept</li><li>Dein Okay bevor wir loslegen</li></ul></div></div>
+    </div>
+    <div class="tl-item" id="tl3">
+      <div class="tl-dot">3</div>
+      <div><div class="tl-timing">2 – 7 Tage</div><div class="tl-title">Entwicklung &<br>Animation</div><div class="tl-desc">Das Design wird zur vollständigen Website – mit 3D, Animationen und allen Formularen.</div><div class="tl-tag">Tag 3 – 10</div></div>
+      <div><div class="tl-box-label">Was entsteht</div><div class="tl-box"><ul><li>Vollständige HTML / CSS / JS Umsetzung</li><li>3D-Szenen & Animationen (Premium)</li><li>Mobile-First & Cross-Browser getestet</li><li>Alle Formulare & Integrationen</li><li>Performance-Optimierung</li></ul></div></div>
+    </div>
+    <div class="tl-item" id="tl4">
+      <div class="tl-dot">4</div>
+      <div><div class="tl-timing">Go Live</div><div class="tl-title">Review &<br>Launch</div><div class="tl-desc">Du prüfst alles auf einem Staging-Server, letzte Anpassungen werden umgesetzt – dann geht's live.</div><div class="tl-tag">Tag 10 – 14</div></div>
+      <div><div class="tl-box-label">Für den Abschluss</div><div class="tl-box"><ul><li>Abnahme auf Staging-Umgebung</li><li>Übergabe des fertigen Website-Codes</li><li>SEO-Grundsetup & Analytics-Aktivierung</li><li>Kleine Anpassungen nach Launch kostenlos</li><li>⚠ Domain, Hosting & E-Mail: eigenverantwortlich</li></ul></div></div>
+    </div>
+  </div>
+  <div class="guarantees-section">
+    <h2 class="g-title reveal">Unsere Versprechen.</h2>
+    <div class="g-grid">
+      <div class="g-card reveal"><div class="g-icon">⚡</div><div class="g-name">Schnelle Lieferung</div><div class="g-desc">Starter in 4–7 T., Premium in 6–8 T., Shop in 10–16 T.</div></div>
+      <div class="g-card reveal" style="transition-delay:.08s"><div class="g-icon">🔍</div><div class="g-name">Volle Transparenz</div><div class="g-desc">Du siehst das Design bevor du bezahlst. Kein Risiko, keine Überraschungen.</div></div>
+      <div class="g-card reveal" style="transition-delay:.16s"><div class="g-icon">🇨🇭</div><div class="g-name">Made in Switzerland</div><div class="g-desc">Schweizer Qualitätsanspruch, auf Deutsch, lokal verankert.</div></div>
+    </div>
+  </div>
+  <div class="cta-bar">
+    <h2>Bereit loszulegen?</h2>
+    <p>Schreib uns – wir melden uns innert 24 Stunden.</p>
+    <button class="btn btn-white" onclick="goTo('kontakt')">Kostenlos anfragen →</button>
+  </div>
+  <div id="footer-ablauf"></div>
+</div>
+
+<!-- PAGE: KONTAKT -->
+<div class="page" id="page-kontakt">
+  <div class="kontakt-wrap">
+    <div class="k-left">
+      <div class="kl-label">Projekt anfragen</div>
+      <h1 class="kl-title">Dein Projekt<br>beginnt hier.</h1>
+      <p class="kl-sub">Füll das Formular aus und wir melden uns innerhalb von 24 Stunden – kostenlos und unverbindlich.</p>
+      <div class="k-facts">
+        <div class="k-fact"><div class="kf-icon">⚡</div><div class="kf-text"><strong>Antwort in 24 Stunden</strong>Werktags meist in wenigen Stunden.</div></div>
+        <div class="k-fact"><div class="kf-icon">🔍</div><div class="kf-text"><strong>Design zuerst, dann bezahlen</strong>Kein Geld bevor du das Konzept siehst.</div></div>
+        <div class="k-fact"><div class="kf-icon">🇨🇭</div><div class="kf-text"><strong>Made in Switzerland</strong>Auf Deutsch, vertrauenswürdig, lokal.</div></div>
+        <div class="k-fact"><div class="kf-icon">💳</div><div class="kf-text"><strong>Einmalig bezahlen</strong>Kein Abo, keine monatlichen Kosten.</div></div>
+      </div>
+    </div>
+    <div class="k-right">
+      <div id="formContent">
+        <h2 class="kr-title">Anfrage senden</h2>
+        <p class="kr-sub">Wähle ein Paket – oder klick auf «Individuell» für ein massgeschneidertes Angebot.</p>
+        <div class="pkg-selector">
+          <div class="pkg-opt" id="opt100" onclick="selPkg('100')"><input type="radio" name="pkg" value="100"><div class="po-price">CHF 100</div><div class="po-name">Starter</div></div>
+          <div class="pkg-opt sel" id="opt250" onclick="selPkg('250')"><div class="po-badge">Beliebt</div><input type="radio" name="pkg" value="250" checked><div class="po-price">CHF 250</div><div class="po-name">Premium</div></div>
+          <div class="pkg-opt" id="opt650" onclick="selPkg('650')"><input type="radio" name="pkg" value="650"><div class="po-price">CHF 650</div><div class="po-name">All-in-One</div></div>
+          <div class="pkg-opt" id="optCustom" onclick="selPkg('custom')" style="border-style:dashed;"><input type="radio" name="pkg" value="custom"><div class="po-price" style="font-size:0.9rem">✦</div><div class="po-name">Individuell</div></div>
+        </div>
+        <div id="customNote" style="display:none;background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.18);border-radius:10px;padding:12px 14px;font-size:0.8rem;color:var(--mu);margin-bottom:14px;">✦ <strong style="color:var(--t)">Individuell</strong> – Beschreib einfach in der Nachricht unten, was du dir vorstellst.</div>
+        <div class="f-row">
+          <div class="f-group"><label class="f-label">Vorname</label><input type="text" id="fname" class="f-input" placeholder="Max"></div>
+          <div class="f-group"><label class="f-label">Nachname</label><input type="text" id="lname" class="f-input" placeholder="Muster"></div>
+        </div>
+        <div class="f-group"><label class="f-label">E-Mail</label><input type="email" id="femail" class="f-input" placeholder="max@beispiel.ch"></div>
+        <div class="f-group"><label class="f-label">Firma (optional)</label><input type="text" id="fcompany" class="f-input" placeholder="Muster GmbH"></div>
+        <div class="f-group"><label class="f-label">Dein Projekt (optional)</label><textarea id="fmsg" class="f-input" placeholder="Beschreib kurz was du brauchst..."></textarea></div>
+        <button class="submit-btn" id="submitBtn" onclick="submitForm()">Anfrage kostenlos senden →</button>
+        <p style="font-size:0.7rem;color:var(--li);text-align:center;margin-top:12px">Kein Spam. Keine Verpflichtung. Antwort in 24h.</p>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="fs-icon">✓</div>
+        <div class="fs-h">Anfrage erhalten!</div>
+        <p class="fs-p">Vielen Dank, <span id="successName"></span>!<br>Wir melden uns innerhalb von 24 Stunden.</p>
+        <div style="margin-top:28px"><button class="btn btn-primary btn-sm" onclick="goTo('ablauf')">Wie läuft's ab? →</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="k-trust">
+    <div class="kt-item"><span>🔒</span><span>SSL & DSG-konform</span></div>
+    <div class="kt-item"><span>⭐</span><span>5.0 / 5 Bewertung</span></div>
+    <div class="kt-item"><span>🚀</span><span>Starter in 4–7 Tagen fertig</span></div>
+    <div class="kt-item"><span>🇨🇭</span><span>Schweizer Qualität</span></div>
+  </div>
+  <div id="footer-kontakt"></div>
+</div>
+
+<!-- LEGAL MODALS -->
+<div class="legal-modal" id="modal-impressum" onclick="closeLegal(event, 'impressum')">
+  <div class="legal-modal-box">
+    <div class="legal-modal-header"><div class="legal-modal-title">Impressum</div><button class="legal-modal-close" onclick="closeLegalBtn('impressum')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>Angaben gemäss Art. 13 Schweizer Obligationenrecht</h3>
+      <p><strong>Webinity</strong><br>[Vorname Nachname / Firmenname]<br>[Strasse und Hausnummer]<br>[PLZ Ort], Schweiz</p>
+      <h3>Kontakt</h3>
+      <p>E-Mail: <a href="mailto:info@webinity.ch">info@webinity.ch</a><br>Telefon: [+41 xx xxx xx xx]</p>
+      <h3>Haftungsausschluss</h3>
+      <p>Alle Angaben auf dieser Website wurden sorgfältig geprüft. Webinity übernimmt keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der Informationen.</p>
+      <h3>Urheberrecht</h3>
+      <p>Alle Inhalte dieser Website sind urheberrechtlich geschützt und Eigentum von Webinity.</p>
+    </div>
+  </div>
+</div>
+
+<div class="legal-modal" id="modal-datenschutz" onclick="closeLegal(event, 'datenschutz')">
+  <div class="legal-modal-box">
+    <div class="legal-modal-header"><div class="legal-modal-title">Datenschutzerklärung</div><button class="legal-modal-close" onclick="closeLegalBtn('datenschutz')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>Grundsatz</h3>
+      <p>Webinity nimmt den Schutz deiner personenbezogenen Daten ernst. Diese Datenschutzerklärung richtet sich nach dem Schweizer Datenschutzgesetz (revDSG).</p>
+      <h3>Welche Daten wir erheben</h3>
+      <p>Wir erheben nur Daten, die du uns aktiv mitteilst – über das Kontaktformular (Name, E-Mail-Adresse, Projektbeschreibung).</p>
+      <h3>Verwendungszweck</h3>
+      <p>Die Daten werden ausschliesslich zur Bearbeitung deiner Anfrage verwendet. Eine Weitergabe an Dritte ohne deine Zustimmung findet nicht statt.</p>
+      <h3>Deine Rechte (revDSG)</h3>
+      <p>Du hast das Recht auf Auskunft, Berichtigung und Löschung deiner Daten. Anfragen an: <a href="mailto:info@webinity.ch">info@webinity.ch</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="legal-modal" id="modal-agb" onclick="closeLegal(event, 'agb')">
+  <div class="legal-modal-box">
+    <div class="legal-modal-header"><div class="legal-modal-title">Allgemeine Geschäftsbedingungen (AGB)</div><button class="legal-modal-close" onclick="closeLegalBtn('agb')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>1. Geltungsbereich</h3>
+      <p>Diese AGB gelten für alle Dienstleistungsverträge zwischen Webinity und dem Kunden. Es gilt Schweizer Recht.</p>
+      <h3>2. Leistungserbringung</h3>
+      <p>Webinity erstellt Websites gemäss dem vereinbarten Paket. Domain, Hosting und E-Mail-Dienste liegen in der Eigenverantwortung des Kunden.</p>
+      <h3>3. Preise und Zahlung</h3>
+      <p>Die Preise verstehen sich in Schweizer Franken (CHF). Zahlung nach Abnahme des Designs.</p>
+      <h3>4. Überarbeitungen</h3>
+      <p>Jedes Paket beinhaltet eine definierte Anzahl kostenloser Überarbeitungsrunden. Darüber hinaus CHF 60–90/h.</p>
+      <h3>5. Gerichtsstand</h3>
+      <p>Gerichtsstand ist der Sitz von Webinity in der Schweiz. Es gilt ausschliesslich Schweizer Recht.</p>
+    </div>
+  </div>
+</div>
+
+<div class="legal-modal" id="modal-cookies" onclick="closeLegal(event, 'cookies')">
+  <div class="legal-modal-box">
+    <div class="legal-modal-header"><div class="legal-modal-title">Cookie-Richtlinie</div><button class="legal-modal-close" onclick="closeLegalBtn('cookies')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>Verwendung von Cookies</h3>
+      <p>Diese Website verwendet nur technisch notwendige Cookies. Es werden keine Marketing- oder Tracking-Cookies ohne deine ausdrückliche Zustimmung gesetzt.</p>
+      <h3>Einstellungen</h3>
+      <p>Da diese Website keine nicht-notwendigen Cookies setzt, ist keine separate Einwilligung erforderlich. Bei Fragen: <a href="mailto:info@webinity.ch">info@webinity.ch</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* FOOTER */
+function renderFooter(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = `
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-logo-wrap"><div class="footer-logo-dot"></div><div class="footer-logo-text">Webinity<sup>CH</sup></div></div>
+        <p class="footer-tagline">Moderne Websites, die Kunden bringen. Einmalig. Kein Abo. Made in Switzerland.</p>
+        <div class="footer-contact-line"><span class="footer-contact-icon">✉</span><a href="mailto:info@webinity.ch">info@webinity.ch</a></div>
+        <div class="footer-contact-line"><span class="footer-contact-icon">🇨🇭</span><span>Schweiz</span></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Angebote</div>
+        <ul class="footer-col-links">
+          <li><a onclick="goTo('pakete')">Starter · CHF 100</a></li>
+          <li><a onclick="goTo('pakete')">Premium · CHF 250</a></li>
+          <li><a onclick="goTo('pakete')">Shop + All-in-One · CHF 650</a></li>
+          <li><a onclick="goTo('kontakt')">Individuelles Angebot</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <ul class="footer-col-links">
+          <li><a onclick="goTo('home')">Start</a></li>
+          <li><a onclick="goTo('pakete')">Pakete</a></li>
+          <li><a onclick="goTo('beispiele')">Beispiele</a></li>
+          <li><a onclick="goTo('ablauf')">Ablauf</a></li>
+          <li><a onclick="goTo('kontakt')">Kontakt / Anfrage</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Rechtliches</div>
+        <ul class="footer-col-links">
+          <li><a onclick="openLegal('impressum')">Impressum</a></li>
+          <li><a onclick="openLegal('datenschutz')">Datenschutz</a></li>
+          <li><a onclick="openLegal('agb')">AGB</a></li>
+          <li><a onclick="openLegal('cookies')">Cookie-Richtlinie</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-trust-bar">
+      <div class="ftr-badge"><span class="ftr-badge-icon">🔒</span><span>SSL-verschlüsselt</span></div>
+      <div class="ftr-badge"><span class="ftr-badge-icon">🇨🇭</span><span>Made in Switzerland</span></div>
+      <div class="ftr-badge"><span class="ftr-badge-icon">⭐</span><span>5.0 / 5 Bewertung</span></div>
+      <div class="ftr-badge"><span class="ftr-badge-icon">⚡</span><span>Starter in 4–7 Tagen</span></div>
+      <div class="ftr-badge"><span class="ftr-badge-icon">💳</span><span>Einmalig – kein Abo</span></div>
+    </div>
+    <div class="footer-legal-bar">
+      <div class="footer-legal-left">© ${new Date().getFullYear()} <strong>Webinity</strong> · Alle Rechte vorbehalten · Schweizer Recht anwendbar</div>
+      <ul class="footer-legal-links">
+        <li><a onclick="openLegal('impressum')">Impressum</a></li>
+        <li><a onclick="openLegal('datenschutz')">Datenschutz</a></li>
+        <li><a onclick="openLegal('agb')">AGB</a></li>
+        <li><a onclick="openLegal('cookies')">Cookies</a></li>
+      </ul>
+    </div>
+  </footer>`;
+}
+['home','pakete','beispiele','ablauf','kontakt'].forEach(p => renderFooter('footer-'+p));
+
+/* LEGAL MODALS */
+function openLegal(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden';}
+function closeLegalBtn(id){document.getElementById('modal-'+id).classList.remove('open');document.body.style.overflow='';}
+function closeLegal(e,id){if(e.target===document.getElementById('modal-'+id))closeLegalBtn(id);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.legal-modal.open').forEach(m=>{m.classList.remove('open');document.body.style.overflow='';});});
+
+/* ROUTER */
+const pages=['home','pakete','beispiele','ablauf','kontakt'];
+let currentPage='home';
+function goTo(page){
+  if(!pages.includes(page))return;
+  pages.forEach(p=>{document.getElementById('page-'+p).classList.remove('active');const nl=document.getElementById('nav-'+p);if(nl)nl.classList.remove('active');});
+  document.getElementById('page-'+page).classList.add('active');
+  const nl=document.getElementById('nav-'+page);if(nl)nl.classList.add('active');
+  currentPage=page;window.scrollTo({top:0,behavior:'instant'});
+  document.getElementById('mobileMenu').classList.remove('open');
+  setTimeout(()=>initReveal(),80);
+  if(page==='ablauf')setTimeout(()=>initTimeline(),100);
+  if(page==='beispiele')setTimeout(()=>{if(window.initNexusCanvas)window.initNexusCanvas();},150);
+  history.pushState({page},'','#'+page);
+}
+function goToPkg(price){goTo('kontakt');setTimeout(()=>selPkg(price),100);}
+window.addEventListener('popstate',e=>{const hash=location.hash.replace('#','')||'home';if(pages.includes(hash))goTo(hash);});
+const initHash=location.hash.replace('#','');
+if(pages.includes(initHash))goTo(initHash);
+else{const n=document.getElementById('nav-home');if(n)n.classList.add('active');}
+
+/* MOBILE MENU */
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
+
+/* REVEAL */
+let revealObs;
+function initReveal(){
+  if(revealObs)revealObs.disconnect();
+  revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('up');});},{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('#page-'+currentPage+' .reveal').forEach(el=>revealObs.observe(el));
+}
+initReveal();
+
+/* TIMELINE */
+function initTimeline(){
+  const tlObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('up');});},{threshold:0.15});
+  document.querySelectorAll('.tl-item').forEach(el=>{el.classList.remove('up');tlObs.observe(el);});
+}
+
+/* FAQ */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{const item=q.parentElement;const wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!wasOpen)item.classList.add('open');});
+});
+
+/* PKG SELECTOR */
+function selPkg(p){
+  document.querySelectorAll('.pkg-opt').forEach(o=>o.classList.remove('sel'));
+  const id=p==='custom'?'optCustom':'opt'+p;
+  const el=document.getElementById(id);if(el)el.classList.add('sel');
+  const note=document.getElementById('customNote');if(note)note.style.display=p==='custom'?'block':'none';
+}
+
+/* FORM SUBMIT */
+async function submitForm(){
+  const fn=document.getElementById('fname').value.trim();
+  const em=document.getElementById('femail').value.trim();
+  if(!fn||!em){alert('Bitte gib deinen Namen und deine E-Mail-Adresse an.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Bitte gib eine gültige E-Mail-Adresse ein.');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='Wird gesendet…';btn.disabled=true;
+  const selOpt=document.querySelector('.pkg-opt.sel');
+  const paket=selOpt?selOpt.querySelector('.po-name')?.textContent+' – '+selOpt.querySelector('.po-price')?.textContent:'Nicht gewählt';
+
+  const FORMSPREE_URL='https://formspree.io/f/mlgoedpe';
+
+  try{
+    const res=await fetch(FORMSPREE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        vorname:fn,
+        nachname:document.getElementById('lname').value.trim(),
+        email:em,
+        firma:document.getElementById('fcompany').value.trim(),
+        paket:paket,
+        nachricht:document.getElementById('fmsg').value.trim()
+      })
+    });
+    if(res.ok){
+      const ln=document.getElementById('lname').value.trim();
+      document.getElementById('formContent').style.display='none';
+      document.getElementById('successName').textContent=fn+(ln?' '+ln:'');
+      document.getElementById('formSuccess').classList.add('show');
+    }else{throw new Error('Fehler');}
+  }catch(e){
+    btn.textContent='Anfrage kostenlos senden →';btn.disabled=false;
+    alert('Leider ist ein Fehler aufgetreten. Bitte schreib uns direkt an info@webinity.ch');
+  }
+}
+
+/* HERO PARTICLES */
+(function(){
+  const cv=document.getElementById('heroParticles');if(!cv)return;
+  const ctx=cv.getContext('2d');let W,H,pts=[],mouse={x:500,y:300};const N=110;
+  function resize(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W;cv.height=H;}
+  resize();window.addEventListener('resize',resize);
+  cv.parentElement.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+  for(let i=0;i<N;i++)pts.push({x:Math.random()*2000,y:Math.random()*1000,vx:(Math.random()-0.5)*0.18,vy:(Math.random()-0.5)*0.12,r:Math.random()*1.8+0.4,a:Math.random()*0.5+0.15});
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;});
+    for(let i=0;i<pts.length;i++){for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(60,140,255,${(1-d/120)*0.18})`;ctx.lineWidth=0.6;ctx.stroke();}}}
+    pts.forEach(p=>{const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);if(d<180){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(mouse.x,mouse.y);ctx.strokeStyle=`rgba(100,170,255,${(1-d/180)*0.35})`;ctx.lineWidth=0.8;ctx.stroke();}});
+    pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(100,160,255,${p.a})`;ctx.fill();});
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* INTERACTIVE GRID */
+(function(){
+  const cv=document.getElementById('gridCanvas');if(!cv)return;
+  const ctx=cv.getContext('2d');let W,H,mouse={x:-999,y:-999};let nodes=[];const SPACING=72;
+  function resize(){const rect=cv.parentElement.getBoundingClientRect();W=cv.width=rect.width;H=cv.height=rect.height;buildNodes();}
+  function buildNodes(){nodes=[];const cols=Math.ceil(W/SPACING)+2,rows=Math.ceil(H/SPACING)+2;for(let r=0;r<=rows;r++)for(let c=0;c<=cols;c++)nodes.push({bx:c*SPACING-SPACING/2,by:r*SPACING-SPACING/2,x:0,y:0,vx:0,vy:0,c,r});}
+  const ro=new ResizeObserver(resize);ro.observe(cv.parentElement);resize();
+  cv.parentElement.addEventListener('mousemove',e=>{const rect=cv.getBoundingClientRect();mouse.x=e.clientX-rect.left;mouse.y=e.clientY-rect.top;});
+  cv.parentElement.addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});
+  function animate(){
+    if(!document.getElementById('page-home').classList.contains('active')){requestAnimationFrame(animate);return;}
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{const dx=mouse.x-(n.bx+n.x),dy=mouse.y-(n.by+n.y),dist=Math.sqrt(dx*dx+dy*dy);const influence=Math.max(0,1-dist/160),force=influence*influence*18;n.vx+=(-dx/(dist+1))*force*0.15;n.vy+=(-dy/(dist+1))*force*0.15;n.vx+=-n.x*0.08;n.vy+=-n.y*0.08;n.vx*=0.82;n.vy*=0.82;n.x+=n.vx;n.y+=n.vy;});
+    nodes.forEach(n=>{const right=nodes.find(m=>m.r===n.r&&m.c===n.c+1),down=nodes.find(m=>m.r===n.r+1&&m.c===n.c);[right,down].forEach(other=>{if(!other)return;const mx=(n.bx+n.x+other.bx+other.x)/2,my=(n.by+n.y+other.by+other.y)/2;const dx2=mouse.x-mx,dy2=mouse.y-my,d=Math.sqrt(dx2*dx2+dy2*dy2);const glow=Math.max(0,1-d/220);ctx.strokeStyle=`rgba(0,113,227,${0.06+glow*0.22})`;ctx.lineWidth=0.5+glow*0.8;ctx.beginPath();ctx.moveTo(n.bx+n.x,n.by+n.y);ctx.lineTo(other.bx+other.x,other.by+other.y);ctx.stroke();});});
+    nodes.forEach(n=>{const dx2=mouse.x-(n.bx+n.x),dy2=mouse.y-(n.by+n.y),d=Math.sqrt(dx2*dx2+dy2*dy2);const glow=Math.max(0,1-d/160);ctx.beginPath();ctx.arc(n.bx+n.x,n.by+n.y,1+glow*2.5,0,Math.PI*2);ctx.fillStyle=`rgba(0,113,227,${0.12+glow*0.6})`;ctx.fill();});
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+/* NEXUS 3D CANVAS — Elegant floating orbs always visible */
+(function(){
+  let running=false;
+  function initNexus(){
+    const canvas=document.getElementById('nexusCanvas3D');
+    if(!canvas||running)return;
+    running=true;
+    function resize(){canvas.width=canvas.offsetWidth||800;canvas.height=canvas.offsetHeight||580;}
+    resize();window.addEventListener('resize',resize);
+    const ctx=canvas.getContext('2d');
+    // Soft glowing orbs + floating particles
+    const orbs=[
+      {x:0.18,y:0.3,r:0.28,vx:0.0003,vy:0.0002,c:'rgba(255,255,255,'},
+      {x:0.82,y:0.65,r:0.22,vx:-0.0002,vy:0.00025,c:'rgba(200,200,220,'},
+      {x:0.55,y:0.15,r:0.18,vx:0.00025,vy:-0.0003,c:'rgba(180,180,200,'},
+    ];
+    const N=60;const pts=[];
+    for(let i=0;i<N;i++)pts.push({
+      x:Math.random(),y:Math.random(),
+      vx:(Math.random()-0.5)*0.00015,vy:(Math.random()-0.5)*0.00015,
+      r:Math.random()*1.5+0.5,a:Math.random()*0.35+0.08,
+      pulse:Math.random()*Math.PI*2
+    });
+    let t=0;
+    function frame(){
+      t+=0.006;
+      const W=canvas.width,H=canvas.height;
+      ctx.clearRect(0,0,W,H);
+      // Draw orbs
+      orbs.forEach(o=>{
+        o.x+=o.vx;o.y+=o.vy;
+        if(o.x<0||o.x>1)o.vx*=-1;
+        if(o.y<0||o.y>1)o.vy*=-1;
+        const g=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.r*W*0.55);
+        g.addColorStop(0,o.c+'0.055)');
+        g.addColorStop(0.4,o.c+'0.025)');
+        g.addColorStop(1,o.c+'0)');
+        ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+      });
+      // Draw particles
+      pts.forEach(p=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0)p.x=1;if(p.x>1)p.x=0;
+        if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+        p.pulse+=0.018;
+        const alpha=p.a*(0.7+Math.sin(p.pulse)*0.3);
+        ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
+      });
+      // Draw thin connecting lines between nearby particles
+      for(let i=0;i<pts.length;i++){
+        for(let j=i+1;j<pts.length;j++){
+          const dx=(pts[i].x-pts[j].x)*canvas.width;
+          const dy=(pts[i].y-pts[j].y)*canvas.height;
+          const d=Math.sqrt(dx*dx+dy*dy);
+          if(d<90){
+            ctx.beginPath();ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);
+            ctx.strokeStyle=`rgba(255,255,255,${(1-d/90)*0.055})`;ctx.lineWidth=0.5;ctx.stroke();
+          }
+        }
+      }
+      if(document.getElementById('nexusCanvas3D'))requestAnimationFrame(frame);
+      else running=false;
+    }
+    frame();
+  }
+  const obs=new MutationObserver(()=>{
+    if(document.getElementById('page-beispiele')&&document.getElementById('page-beispiele').classList.contains('active')){
+      initNexus();obs.disconnect();
+    }
+  });
+  obs.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class']});
+  setTimeout(()=>{if(document.getElementById('page-beispiele')&&document.getElementById('page-beispiele').classList.contains('active'))initNexus();},100);
+  window.initNexusCanvas=initNexus;
+})();
+
+/* NEXUS MINI CHART — white elegant monochrome */
+(function(){
+  function drawMiniChart(){
+    const c=document.getElementById('nexusMiniChart');if(!c)return;
+    c.width=c.offsetWidth||200;c.height=60;
+    const ctx=c.getContext('2d');const W=c.width,H=c.height;
+    const data=[12,22,16,38,28,50,40,65,52,74,62,88];
+    const max=Math.max(...data),min=Math.min(...data);
+    const px=i=>(i/(data.length-1))*(W-4)+2;
+    const py=v=>H-3-((v-min)/(max-min))*(H-6);
+    const grad=ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,'rgba(255,255,255,0.13)');
+    grad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.clearRect(0,0,W,H);
+    ctx.beginPath();ctx.moveTo(px(0),py(data[0]));
+    for(let i=1;i<data.length;i++){const cpx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(cpx,py(data[i-1]),cpx,py(data[i]),px(i),py(data[i]));}
+    ctx.lineTo(px(data.length-1),H);ctx.lineTo(px(0),H);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+    ctx.beginPath();ctx.moveTo(px(0),py(data[0]));
+    for(let i=1;i<data.length;i++){const cpx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(cpx,py(data[i-1]),cpx,py(data[i]),px(i),py(data[i]));}
+    ctx.strokeStyle='rgba(255,255,255,0.55)';ctx.lineWidth=1.2;ctx.stroke();
+    const lx=px(data.length-1),ly=py(data[data.length-1]);
+    ctx.beginPath();ctx.arc(lx,ly,2.5,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.85)';ctx.fill();
+  }
+  setTimeout(drawMiniChart,400);
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(drawMiniChart,500));
+  const obs=new MutationObserver(()=>{if(document.getElementById('nexusMiniChart'))drawMiniChart();});
+  obs.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class']});
+})();
+
+</script>
+</body>
+</html>
