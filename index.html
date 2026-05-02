@@ -4,6 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Webinity – Websites, die Kunden bringen</title>
+<meta name="description" content="Webinity erstellt moderne Websites für Unternehmen in der Schweiz – schnell, hochwertig und auf Conversion, SEO und messbare Anfragen optimiert.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Webinity">
+<meta name="theme-color" content="#0071e3">
+<link rel="canonical" href="https://webinity.ch/">
+<meta property="og:locale" content="de_CH">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Webinity – Websites, die Kunden bringen">
+<meta property="og:description" content="Moderne Websites für Unternehmen in der Schweiz – optimiert für Vertrauen, SEO und neue Anfragen.">
+<meta property="og:url" content="https://webinity.ch/">
+<meta property="og:site_name" content="Webinity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Webinity – Websites, die Kunden bringen">
+<meta name="twitter:description" content="Moderne Websites für Unternehmen in der Schweiz – optimiert für Vertrauen, SEO und neue Anfragen.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Webinity",
+  "url": "https://webinity.ch/",
+  "description": "Webdesign und Website-Erstellung für Unternehmen in der Schweiz mit Fokus auf SEO, Performance und Conversion.",
+  "areaServed": "CH",
+  "email": "info@webinity.ch",
+  "priceRange": "CHF",
+  "serviceType": ["Webdesign", "SEO", "Website-Erstellung", "Conversion-Optimierung"]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Ccircle cx='22' cy='10' r='4' fill='%230071e3'/%3E%3Ctext x='4' y='26' font-family='Inter,system-ui,sans-serif' font-size='20' font-weight='800' fill='white' letter-spacing='-1'%3EW%3C/text%3E%3C/svg%3E">
 <style>
@@ -1148,9 +1175,26 @@ footer.site-footer{
   .trust-item::after{display:none!important;}
   .mlu-products{grid-template-columns:1fr 1fr;}
 }
+
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.skip-link:focus{left:16px;top:16px;width:auto;height:auto;overflow:visible;z-index:12000;background:#fff;color:#000;padding:10px 14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.15);}
+.cookie-banner{position:fixed;left:20px;right:20px;bottom:20px;z-index:9999;background:rgba(255,255,255,0.96);backdrop-filter:blur(18px);border:1px solid rgba(0,0,0,0.08);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,0.18);padding:18px 18px 16px;display:none;max-width:920px;margin:0 auto;}
+.cookie-banner.show{display:block;}
+.cookie-banner-inner{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;}
+.cookie-banner-copy{max-width:620px;}
+.cookie-banner-title{font-size:0.95rem;font-weight:800;letter-spacing:-0.02em;color:var(--t);margin-bottom:6px;}
+.cookie-banner-text{font-size:0.8rem;line-height:1.6;color:var(--mu);font-weight:300;}
+.cookie-banner-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
+.cookie-banner-btn{border:none;border-radius:999px;padding:11px 16px;font-size:0.8rem;font-weight:600;font-family:var(--font);cursor:pointer;}
+.cookie-accept{background:var(--ac);color:#fff;}
+.cookie-decline{background:var(--off);color:var(--t);border:1px solid var(--off2);}
+.cookie-settings-link{background:transparent;color:var(--ac);padding:11px 8px;}
+@media(max-width:700px){.cookie-banner{left:12px;right:12px;bottom:12px;padding:16px}.cookie-banner-inner{flex-direction:column}.cookie-banner-actions{justify-content:flex-start;width:100%}.cookie-banner-btn{width:100%;text-align:center}}
+
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav id="mainNav">
@@ -1176,6 +1220,7 @@ footer.site-footer{
 </div>
 
 <!-- PAGE: HOME -->
+<main id="main-content">
 <div class="page active" id="page-home">
   <section class="hero">
     <canvas id="heroParticles"></canvas>
@@ -2097,16 +2142,6 @@ async function submitForm(){
     alert('Leider ist ein Fehler aufgetreten. Bitte schreib uns direkt an info@webinity.ch');
   }
 }
-  
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XQPY5KL197"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XQPY5KL197');
-</script>
 /* HERO PARTICLES */
 (function(){
   const cv=document.getElementById('heroParticles');if(!cv)return;
@@ -2251,5 +2286,124 @@ async function submitForm(){
 })();
 
 </script>
+</main>
+
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie Hinweis">
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-copy">
+      <div class="cookie-banner-title">Cookies & Analyse</div>
+      <div class="cookie-banner-text">Wir verwenden notwendige Cookies für die Funktion der Website. Google Analytics wird erst nach deiner Zustimmung geladen, damit Besuche datenschutzfreundlich gemessen werden können.</div>
+    </div>
+    <div class="cookie-banner-actions">
+      <button class="cookie-banner-btn cookie-decline" type="button" id="cookieDecline">Nur notwendige</button>
+      <button class="cookie-banner-btn cookie-settings-link" type="button" id="cookieOpenSettings">Einstellungen</button>
+      <button class="cookie-banner-btn cookie-accept" type="button" id="cookieAccept">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+<div class="cookie-settings-modal" id="cookieSettingsModal" aria-hidden="true">
+  <div class="csm-box" role="dialog" aria-modal="true" aria-labelledby="cookieSettingsTitle">
+    <div class="csm-header">
+      <div class="csm-title" id="cookieSettingsTitle">Cookie-Einstellungen</div>
+      <button class="csm-close" id="cookieSettingsClose" type="button" aria-label="Schliessen">✕</button>
+    </div>
+    <div class="csm-body">
+      <div class="csm-intro">Du kannst festlegen, ob Google Analytics geladen werden darf. Notwendige Cookies bleiben aktiv, damit Grundfunktionen der Website zuverlässig laufen.</div>
+      <div class="csm-category">
+        <div class="csm-cat-header">
+          <div class="csm-cat-name">Notwendige Cookies</div>
+          <label class="csm-toggle"><input type="checkbox" checked disabled><span class="csm-slider"></span></label>
+        </div>
+        <div class="csm-cat-desc">Diese Cookies sind technisch erforderlich und können nicht deaktiviert werden.</div>
+      </div>
+      <div class="csm-category">
+        <div class="csm-cat-header">
+          <div class="csm-cat-name">Analyse / Google Analytics</div>
+          <label class="csm-toggle"><input type="checkbox" id="analyticsConsentToggle"><span class="csm-slider"></span></label>
+        </div>
+        <div class="csm-cat-desc">Hilft zu verstehen, wie Besucher die Website nutzen, damit Inhalte und Performance verbessert werden können.</div>
+      </div>
+      <div class="csm-footer">
+        <button class="csm-save" id="cookieSaveSelection" type="button">Auswahl speichern</button>
+        <button class="csm-accept-all" id="cookieAcceptAllFromSettings" type="button">Alle akzeptieren</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  var GA_ID='G-XQPY5KL197';
+  var consent={necessary:true,analytics:false,decided:false};
+  var gaLoaded=false;
+  var cookieBanner, settingsModal, analyticsToggle;
+
+  function setConsent(update){
+    consent=Object.assign({},consent,update||{});
+    window.__cookieConsent=consent;
+    try{window.name='cookie-consent:'+JSON.stringify(consent);}catch(e){}
+  }
+
+  function readConsent(){
+    try{
+      if(window.name&&window.name.indexOf('cookie-consent:')===0){
+        var parsed=JSON.parse(window.name.replace('cookie-consent:',''));
+        if(parsed&&typeof parsed==='object') consent=Object.assign({},consent,parsed);
+      }
+    }catch(e){}
+    window.__cookieConsent=consent;
+  }
+
+  function loadAnalytics(){
+    if(gaLoaded||!consent.analytics) return;
+    gaLoaded=true;
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=window.gtag||function(){dataLayer.push(arguments);};
+    gtag('consent','default',{
+      'analytics_storage':'granted',
+      'ad_storage':'denied',
+      'ad_user_data':'denied',
+      'ad_personalization':'denied'
+    });
+    gtag('js', new Date());
+    gtag('config', GA_ID, { 'anonymize_ip': true, 'cookie_flags': 'SameSite=None;Secure' });
+    var s=document.createElement('script');
+    s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;
+    document.head.appendChild(s);
+  }
+
+  function applyConsent(){
+    if(consent.analytics){ loadAnalytics(); }
+    if(cookieBanner){ cookieBanner.classList.toggle('show', !consent.decided); }
+    if(analyticsToggle){ analyticsToggle.checked=!!consent.analytics; }
+  }
+
+  function openSettings(){ settingsModal&&settingsModal.classList.add('open'); settingsModal&&settingsModal.setAttribute('aria-hidden','false'); if(analyticsToggle) analyticsToggle.checked=!!consent.analytics; }
+  function closeSettings(){ settingsModal&&settingsModal.classList.remove('open'); settingsModal&&settingsModal.setAttribute('aria-hidden','true'); }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    cookieBanner=document.getElementById('cookieBanner');
+    settingsModal=document.getElementById('cookieSettingsModal');
+    analyticsToggle=document.getElementById('analyticsConsentToggle');
+    readConsent();
+    applyConsent();
+    document.getElementById('cookieAccept')?.addEventListener('click',function(){ setConsent({analytics:true,decided:true}); applyConsent(); closeSettings(); });
+    document.getElementById('cookieDecline')?.addEventListener('click',function(){ setConsent({analytics:false,decided:true}); applyConsent(); closeSettings(); });
+    document.getElementById('cookieOpenSettings')?.addEventListener('click',openSettings);
+    document.getElementById('cookieSettingsClose')?.addEventListener('click',closeSettings);
+    document.getElementById('cookieSaveSelection')?.addEventListener('click',function(){ setConsent({analytics:!!analyticsToggle.checked,decided:true}); applyConsent(); closeSettings(); });
+    document.getElementById('cookieAcceptAllFromSettings')?.addEventListener('click',function(){ if(analyticsToggle) analyticsToggle.checked=true; setConsent({analytics:true,decided:true}); applyConsent(); closeSettings(); });
+    settingsModal?.addEventListener('click',function(e){ if(e.target===settingsModal) closeSettings(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeSettings(); });
+  });
+})();
+</script>
+
 </body>
 </html>
+
+
+kannst du den google analytics code richtig einfügen und igrnedwo ist gestanden man soll auf jder seite diesen einfügen kannst du das machen ohne daqss meine webseite kaputt geht dnen aktuell sieht sie nicht nnormal aus sende mir den ganzen code
